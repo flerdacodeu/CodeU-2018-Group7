@@ -14,7 +14,7 @@ class Node:
 def findKthLastElement(head,k): 
     temp1 = head
     temp2 = head
-    while k > 0:
+    while k >= 0:
         if temp2 == None:
             return temp2
         k -= 1

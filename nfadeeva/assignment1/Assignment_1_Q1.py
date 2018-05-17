@@ -11,6 +11,7 @@ def is_anagrams(s1, s2, case_sensitive=False, punctuation=string.punctuation):
     the original sentence.
 
     :param punctuation: symbols that will be ignored
+    :return if s1 is an anagram of s2
     """
     # replace all punctuations symbols to space
     s1 = re.sub(r"[{}]".format(punctuation)," ", s1)
@@ -28,13 +29,12 @@ def is_anagrams(s1, s2, case_sensitive=False, punctuation=string.punctuation):
     count_s1 = [Counter(x) for x in s1.strip().split(' ')]
     count_s2 = [Counter(x) for x in s2.strip().split(' ')]
 
-    # delete from the count_s1 every word that are anagram
-    # with the word in count_s2
+    # delete from the count_s1 every word that is anagram of the word in count_s2
     for word in count_s2:
         if word not in count_s1:
             return False
         else:
             count_s1.remove(word)
 
-    # if all words from the s2 is anagrams to s1 return True
+    # if all words from the s2 is anagrams of one of the words in s1 return True
     return len(count_s1) == 0

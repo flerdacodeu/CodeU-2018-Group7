@@ -3,7 +3,7 @@ from collections import Counter
 import re
 
 
-def is_anagrams(s1, s2, case_sensitive=False, punctuation=string.punctuation):
+def is_anagram(s1, s2, case_sensitive=False, punctuation=string.punctuation):
     """
     Given two strings, determine if one is an anagram of the other.
     Function able to handle anagrams of sentences, where each word

@@ -8,20 +8,20 @@ import sys
 
 def areAnagramsCaseInsensitive(str1,str2):
     
-    letters = [0]*27
+    letters = [0]*257
     for i in range(0, len(str1)):
-        if ord(str1[i]) < 97 :
-            letters[ord(str1[i])-ord('A')] += 1
+        if ord(str1[i]) <= 90 and ord(str1[i]) >= 65 :
+            letters[ord(str1[i])-ord('A')+ord('a')] += 1
         else:
-            letters[ord(str1[i])-ord('a')] += 1
+            letters[ord(str1[i])] += 1
     
     for i in range(0, len(str2)):
-        if ord(str2[i]) < 97:
-            letters[ord(str2[i])-ord('A')] -= 1
+        if ord(str2[i]) <= 90 and ord(str2[i]) >= 65 :
+            letters[ord(str2[i])-ord('A')+ord('a')] -= 1
         else:
-            letters[ord(str2[i])-ord('a')] -= 1
+            letters[ord(str2[i])] -= 1
         
-    for i in range(0,26):
+    for i in range(0,256):
         if letters[i] != 0:
             return 0
  
@@ -29,25 +29,15 @@ def areAnagramsCaseInsensitive(str1,str2):
     
 def areAnagramsCaseSensitive(str1,str2):
     
-    letters = [0]*27
-    CapitalLetters = [0]*27
+    letters = [0]*257
     for i in range(0, len(str1)):
-        if ord(str1[i]) < 97:
-            CapitalLetters[ord(str1[i])-ord('A')] += 1
-        else:
-            letters[ord(str1[i])-ord('a')] += 1
+        letters[ord(str1[i])-ord('a')] += 1
     
     for i in range(0, len(str2)):
-        if ord(str2[i]) < 97 :
-            CapitalLetters[ord(str2[i])-ord('A')] -= 1
-        else:
-            letters[ord(str2[i])-ord('a')] -= 1
+        letters[ord(str2[i])-ord('a')] -= 1
         
-    for i in range(0,26):
+    for i in range(0,256):
         if letters[i] != 0:
-            return 0
-    for i in range(0,26):
-        if CapitalLetters[i] != 0:
             return 0
 
     return 1

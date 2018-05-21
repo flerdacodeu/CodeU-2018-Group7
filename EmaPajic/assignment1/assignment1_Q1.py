@@ -6,18 +6,22 @@
 
 import sys
 
-def areAnagramsCaseInsensitive(str1,str2):
+def areAnagrams(str1,str2,isCaseSensitive):
     
     letters = [0]*257
     for i in range(0, len(str1)):
-        if ord(str1[i]) <= 90 and ord(str1[i]) >= 65 :
+        if ord(str1[i]) <= 90 and ord(str1[i]) >= 65 and isCaseSensitive == 0 :
             letters[ord(str1[i])-ord('A')+ord('a')] += 1
+        elif ord(str1[i]) <= 90 and ord(str1[i]) >= 65 and isCaseSensitive == 1 :
+            letters[ord(str1[i])-ord('a')] += 1
         else:
             letters[ord(str1[i])] += 1
     
     for i in range(0, len(str2)):
-        if ord(str2[i]) <= 90 and ord(str2[i]) >= 65 :
+        if ord(str2[i]) <= 90 and ord(str2[i]) >= 65 and isCaseSensitive == 0 :
             letters[ord(str2[i])-ord('A')+ord('a')] -= 1
+        elif ord(str2[i]) <= 90 and ord(str2[i]) >= 65 and isCaseSensitive == 1 :
+            letters[ord(str1[i])-ord('a')] -= 1
         else:
             letters[ord(str2[i])] -= 1
         
@@ -25,21 +29,6 @@ def areAnagramsCaseInsensitive(str1,str2):
         if letters[i] != 0:
             return 0
  
-    return 1
-    
-def areAnagramsCaseSensitive(str1,str2):
-    
-    letters = [0]*257
-    for i in range(0, len(str1)):
-        letters[ord(str1[i])-ord('a')] += 1
-    
-    for i in range(0, len(str2)):
-        letters[ord(str2[i])-ord('a')] -= 1
-        
-    for i in range(0,256):
-        if letters[i] != 0:
-            return 0
-
     return 1
 
 def areAnagramsOfSentences(str1,str2):

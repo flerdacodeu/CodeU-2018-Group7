@@ -3,7 +3,7 @@ class ListNode:
         self.value = x
         self.next = None
 
-def kth_element(head, k):
+def kth_last_element(head, k):
     current = head
     length = 0
     while current is not None:

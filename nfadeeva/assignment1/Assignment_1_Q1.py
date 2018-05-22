@@ -16,6 +16,7 @@ def is_anagram(s1, s2, case_sensitive=False, punctuation=string.punctuation):
     # replace all punctuations symbols to space
     s1 = re.sub(r"[{}]".format(punctuation)," ", s1)
     s2 = re.sub(r"[{}]".format(punctuation)," ", s2)
+
     if not case_sensitive:
         s1 = s1.lower()
         s2 = s2.lower()
@@ -34,6 +35,7 @@ def is_anagram(s1, s2, case_sensitive=False, punctuation=string.punctuation):
             return False
         else:
             count_s1.remove(word)
+            
     # if all words from the s2 is anagrams of one of the words in s1 return True
     return not count_s1
 

@@ -1,6 +1,7 @@
 from collections import defaultdict
+from collections import Counter
 
-def isAnagram(s, t, case_sensitive=True):
+def is_anagram(s, t, case_sensitive=True):
     """
     Given two strings s and t returns True if t is anagram of s and False otherwise.
     """
@@ -9,11 +10,6 @@ def isAnagram(s, t, case_sensitive=True):
     if (not case_sensitive):
         s = s.casefold()
         t = t.casefold()
-    symbols = defaultdict(int)
-    for c in s:
-        symbols[c] += 1
-    for c in t:
-        symbols[c] -= 1
-        if symbols[c] < 0:
-            return False
-    return True
+    counter_s = Counter(s)
+    counter_t = Counter(t)
+    return counter_s == counter_t

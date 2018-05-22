@@ -13,3 +13,17 @@ def is_anagram(s, t, case_sensitive=True):
     counter_s = Counter(s)
     counter_t = Counter(t)
     return counter_s == counter_t
+
+def main():
+    """
+    Some simple examples to test the function is_anagram
+    """
+    if is_anagram('a', 'A'):
+        print('There is a bug')
+    if not is_anagram('a', 'A', False):
+        print('There is a bug')
+    if not is_anagram('apple', 'lappe'):
+        print('There is a bug')
+
+if __name__ == '__main__':
+    main()

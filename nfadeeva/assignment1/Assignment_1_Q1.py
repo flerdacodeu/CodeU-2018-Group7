@@ -37,4 +37,4 @@ def is_anagram(s1, s2, case_sensitive=False, punctuation=string.punctuation):
             count_s1.remove(word)
 
     # if all words from the s2 is anagrams of one of the words in s1 return True
-    return len(count_s1) == 0
+    return not count_s1

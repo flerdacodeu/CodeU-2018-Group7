@@ -17,7 +17,7 @@ class LinkedList:
         new_node.next = self.head
         self.head = new_node
 
-    def find_kth_last_element(self, k):
+    def kth_last_element(self, k):
         """
         Return the kth to last element of the list
         k = 0 - the last element, e.t.c.

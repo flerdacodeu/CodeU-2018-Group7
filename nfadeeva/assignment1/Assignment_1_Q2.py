@@ -43,3 +43,13 @@ class LinkedList:
                 first_ptr = first_ptr.next
                 second_ptr = second_ptr.next
             return second_ptr
+
+
+my_list = LinkedList()
+for value in [1, 2, 3]:
+    my_list.push(value)
+
+# my_list looks like: 3->2->1 because every new element is pushed to the head
+
+print(my_list.kth_last_element(0).data)  # 1
+print(my_list.kth_last_element(2).data)  # 3

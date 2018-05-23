@@ -18,21 +18,33 @@ def kth_last_element(head, k):
         i += 1
     return current
 
-head = ListNode(1)
-prev = head
-for i in range(2, 6):
-    new_node = ListNode(i)
-    prev.next = new_node
-    prev = new_node
+def construct_linked_list(elements):
+    """
+    Input should be a list or a string
+    """
+    head = ListNode(elements[0])
+    prev = head
+    for elem in elements[1:]:
+        new_node = ListNode(elem)
+        prev.next = new_node
+        prev = prev.next
+    return head
 
-print(kth_last_element(head, 0).value)
+def main():
+    elements = range(10)
+    linked_list = construct_linked_list(elements)
+    for k in range(len(elements)):
+        value = kth_last_element(linked_list, k).value
+        if (value != elements[-1 - k]):
+            print('There is a bug: {} is not equal to {}'.format(value,
+                elements[-1 -k]))
+    letters = "abcdefghijklmnopqrstuwxyz"
+    linked_list = construct_linked_list(letters)
+    for k in range(len(letters)):
+        value = kth_last_element(linked_list, k).value
+        if (value != letters[-1 - k]):
+            print('There is a bug: {} is not equal to {}'.format(value,
+                letters[-1 -k]))
 
-letters = "abcdefghijklmnopqrstuwxyz"
-head = ListNode('a')
-prev = head
-for symbol in letters[1:]:
-    new_node = ListNode(symbol)
-    prev.next = new_node
-    prev = new_node
-
-print(kth_last_element(head, 4).value)
+if __name__ == "__main__":
+    main()

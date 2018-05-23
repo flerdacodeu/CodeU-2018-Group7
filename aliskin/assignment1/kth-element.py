@@ -35,16 +35,13 @@ def main():
     linked_list = construct_linked_list(elements)
     for k in range(len(elements)):
         value = kth_last_element(linked_list, k).value
-        if (value != elements[-1 - k]):
-            print('There is a bug: {} is not equal to {}'.format(value,
-                elements[-1 -k]))
+        assert (value == elements[-1 - k]), '{} is not equal to {}'.format(value, elements[-1 -k])
+
     letters = "abcdefghijklmnopqrstuwxyz"
     linked_list = construct_linked_list(letters)
     for k in range(len(letters)):
         value = kth_last_element(linked_list, k).value
-        if (value != letters[-1 - k]):
-            print('There is a bug: {} is not equal to {}'.format(value,
-                letters[-1 -k]))
+        assert (value == letters[-1 - k]), '{} is not equal to {}'.format(value, letters[-1 -k])
 
 if __name__ == "__main__":
     main()

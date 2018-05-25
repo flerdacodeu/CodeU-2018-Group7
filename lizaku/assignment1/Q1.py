@@ -2,6 +2,10 @@ import string
 import re
 
 def anagrams_words(w1, w2, case_insensitive=True):
+    # The idea of the algorithm is the following: I take a letter in one word and check if it is present in another word.
+    # If it is, I want to mark this letter in both words as "checked". The initial list of errors is considered 
+    # to be "unchecked", and after the check the letters are removed. So removing letters is equal to marking them "checked".
+    # If I don't find common letters in the "unchecked" list anymore, then the words are not anagrams.
     if case_insensitive:
         w1 = w1.lower()
         w2 = w2.lower()
@@ -23,6 +27,8 @@ def anagrams_words(w1, w2, case_insensitive=True):
 # I split the words by punctuation marks and whitespace characters and filter them out.
 
 def anagrams_sentences(s1, s2, case_insensitive=True):
+    # The algorithm is the same as with word anagrams. The whole list of words serves as "unchecked" words, 
+    # and after the check in both sentences found words are checked and therefore removed from the "unchecked" list.
     if case_insensitive:
         s1 = s1.lower()
         s2 = s2.lower()
@@ -32,14 +38,12 @@ def anagrams_sentences(s1, s2, case_insensitive=True):
         return False
     while words1 != [] or words2 != []:
         for w1 in words1:
-            found = False
             for w2 in words2:
                 if anagrams_words(w1, w2):
-                    found = True
                     words1.remove(w1)
                     words2.remove(w2)
                     break
-            if not found:        
+            else:        
                 return False
     return True
                 

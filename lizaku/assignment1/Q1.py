@@ -14,6 +14,7 @@ def anagrams_words(w1, w2, case_insensitive=True):
     letters1 = list(w1)
     letters2 = list(w2)
     while letters1 != [] or letters2 != []:
+        # Here I perform the check, and the checked letters are removed from the list
         for letter in letters1:
             if letter in letters2:
                 letters1.remove(letter)

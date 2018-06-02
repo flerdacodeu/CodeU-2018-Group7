@@ -14,6 +14,7 @@ def find_all_ancestors(root, key, result=None):
 
         :return list of ancestors of the given key or False if the key is not in the Tree
         """
+        
         if root is None:
             return False
 
@@ -55,7 +56,8 @@ class TestPrintAncestors(unittest.TestCase):
 
     def test_missed_key(self):
         """
-        function should return False when the given key is not in the given tree
+        Function should return False when the given key is not in the given tree
+
         """
         root = Node(7)
         root.right = Node(4)

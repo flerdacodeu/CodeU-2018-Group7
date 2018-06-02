@@ -62,3 +62,4 @@ class TestPrintAncestors(unittest.TestCase):
         root = Node(7)
         root.right = Node(4)
         self.assertFalse(find_all_ancestors(root, 6))
+

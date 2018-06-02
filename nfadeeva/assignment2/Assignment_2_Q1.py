@@ -14,7 +14,7 @@ def find_all_ancestors(root, key, result=None):
 
         :return list of ancestors of the given key or False if the key is not in the Tree
         """
-        
+
         if root is None:
             return False
 

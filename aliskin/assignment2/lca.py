@@ -1,45 +1,23 @@
 import unittest
+from tree import TreeNode, build_tree_from_preorder
 
-class TreeNode():
-    def __init__(self, value, parent=None, left=None, right=None):
-        self.value = value
-        self.parent = parent
-        self.left = left
-        self.right = right
-
-def build_tree_from_preorder(keys):
+def find_distance_to_root(node):
     '''
-    keys: a list of keys in full preorder (i.e. all none vertices included)
-    returns a pointer to the root of binary tree
+    Returns a distance between a node and a root of the tree
     '''
-    if len(keys) == 0:
-        return None
-    root = TreeNode(keys[0])
-    if (len(keys) == 1):
-        return root
-    half_len = len(keys) // 2
-    left = build_tree_from_preorder(keys[1:(half_len + 1)])
-    right = build_tree_from_preorder(keys[half_len + 1:])
-    root.left = left
-    root.left.parent = root
-    root.right = right
-    root.right.parent = root
-    return root
-
-def find_height(node):
     current_node = node
     height = 0
     while current_node:
         current_node = current_node.parent
         height += 1
-    return height
+    return height - 1
 
 def find_lca(first_node, second_node):
     '''
     Given two nodes in a tree returns their lowest common ancestor
     '''
-    first_height = find_height(first_node)
-    second_height = find_height(second_node)
+    first_height = find_distance_to_root(first_node)
+    second_height = find_distance_to_root(second_node)
     current_first_node = first_node
     current_second_node = second_node
     if first_height > second_height:

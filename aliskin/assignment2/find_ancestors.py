@@ -1,27 +1,5 @@
 import unittest
-
-class TreeNode:
-    def __init__(self, x, left=None, right=None):
-        self.value = x
-        self.left = left
-        self.right = right
-
-def build_tree_from_preorder(keys):
-    '''
-    keys: a list of keys in full preorder (i.e. all none vertices included)
-    returns a pointer to the root of binary tree
-    '''
-    if len(keys) == 0:
-        return None
-    root = TreeNode(keys[0])
-    if (len(keys) == 1):
-        return root
-    half_len = len(keys) // 2
-    left = build_tree_from_preorder(keys[1:(half_len + 1)])
-    right = build_tree_from_preorder(keys[half_len + 1:])
-    root.left = left
-    root.right = right
-    return root
+from tree import TreeNode, build_tree_from_preorder
 
 def find_ancestors(root, key):
     '''

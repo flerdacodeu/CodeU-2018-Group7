@@ -4,44 +4,7 @@
 @author: EmaPajic
 """
 import unittest
-
-"""If we assume that we can have a pointer to the parent"""
-
-class TreeNode:
-    def __init__(self, val, left = None, right = None, parent = None):
-        self.val = val
-        self.left = left
-        self.right = left
-        self.parent = parent
-        
-"""We just go through pointers to parent until we reach None"""
-def find_ancestors(node):
-    
-    result = []
-    if node == None:
-        return None
-    temp = node
-    while temp.parent != None:
-        result.append(temp.parent.val)
-        temp = temp.parent
-    return result
-
-"""Function to build tree from preorder that contains None pointers where needed"""
-def build_tree_from_preorder(values):
-    
-    if len(values) == 0 or values[0] == None:
-        return None
-    root = TreeNode(values[0])
-    if len(values) == 1:
-        return root
-    root.left = build_tree_from_preorder(values[1:((len(values)-1) // 2 + 1)])
-    root.right = build_tree_from_preorder(values[((len(values)-1) // 2 + 1):]) 
-    if root.left != None:
-        root.left.parent = root
-    if root.right != None:
-        root.right.parent = root
-    
-    return root
+import assignments
 
 class TestQ1(unittest.TestCase):
     

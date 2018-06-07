@@ -4,7 +4,7 @@
 """
 
 import unittest
-import assignments
+from assignments import TreeNode,build_tree_from_preorder,height,lowest_common_ancestor
 
 class TestQ2(unittest.TestCase):
     

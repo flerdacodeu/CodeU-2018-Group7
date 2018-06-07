@@ -4,7 +4,7 @@
 @author: EmaPajic
 """
 import unittest
-import assignments
+from assignments import TreeNode,build_tree_from_preorder,find_ancestors
 
 class TestQ1(unittest.TestCase):
     

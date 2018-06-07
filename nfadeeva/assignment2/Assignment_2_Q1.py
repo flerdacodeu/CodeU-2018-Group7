@@ -22,7 +22,7 @@ def find_all_ancestors(root, key, result=None):
             result = []
 
         if root.data == key:
-            return True
+            return [root.data]
 
         # append the current root value to the result if the given key
         # in the right or in the left part of the tree (check it recursively)
@@ -32,7 +32,7 @@ def find_all_ancestors(root, key, result=None):
             return result
 
         # the given key is not in the tree
-        return False
+        raise False
 
 
 # run all tests:
@@ -62,4 +62,3 @@ class TestPrintAncestors(unittest.TestCase):
         root = Node(7)
         root.right = Node(4)
         self.assertFalse(find_all_ancestors(root, 6))
-

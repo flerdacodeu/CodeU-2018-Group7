@@ -32,7 +32,7 @@ def find_all_ancestors(root, key, result=None):
             return result
 
         # the given key is not in the tree
-        raise False
+        return False
 
 
 # run all tests:

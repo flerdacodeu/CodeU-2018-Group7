@@ -4,62 +4,7 @@
 """
 
 import unittest
-
-class TreeNode:
-    def __init__(self,val):
-        self.val = val
-        self.left = None
-        self.right = None
-        self.parent = None
-    
-"""Function to find height of node"""
-def height(node):
-    
-    height = 0
-    temp = node
-    while temp != None:
-        temp = temp.parent
-        height += 1
-    return height
-
-"""Function that searches for LCA of 2 given nodes in a tree"""
-def lowest_common_ancestor(node1,node2):
-    
-    height1 = height(node1)
-    height2 = height(node2)
-    
-    temp1 = node1
-    temp2 = node2
-    
-    if height1 > height2:
-        for i in range(0,height1-height2):
-            temp1 = temp1.parent
-    else:
-        for i in range(0,height2-height1):
-            temp2 = temp2.parent
-            
-    while temp1 != temp2:
-        temp1 = temp1.parent
-        temp2 = temp2.parent
-    
-    return temp1
-
-"""Function to build tree from preorder that contains None pointers where needed"""
-def build_tree_from_preorder(values):
-    
-    if len(values) == 0 or values[0] == None:
-        return None
-    root = TreeNode(values[0])
-    if len(values) == 1:
-        return root
-    root.left = build_tree_from_preorder(values[1:((len(values)-1) // 2 + 1)])
-    root.right = build_tree_from_preorder(values[((len(values)-1) // 2 + 1):]) 
-    if root.left != None:
-        root.left.parent = root
-    if root.right != None:
-        root.right.parent = root
-    
-    return root
+import assignments
 
 class TestQ2(unittest.TestCase):
     

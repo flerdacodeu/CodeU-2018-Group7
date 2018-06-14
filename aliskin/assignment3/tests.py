@@ -18,13 +18,13 @@ class TestWordSearchSimple(unittest.TestCase):
     def test_empty_grid(self):
         self.assertEqual(word_search([], self.dictionary), set())
 
-class TestWordSearch(unittest.TestCase):
+class TestWordSearchStress(unittest.TestCase):
     def setUp(self):
         words = ['a' * x for x in range(1, 11)]
         self.dictionary = Dictionary(words)
         self.grid = [list('a' * 4) for i in range(4)]
 
-    def test_bla(self):
+    def test_stress(self):
         self.assertEqual(word_search(self.grid, self.dictionary),
                 set(self.dictionary.words))
 
@@ -33,7 +33,7 @@ def suite():
     suite.addTest(TestWordSearchSimple('test_example'))
     suite.addTest(TestWordSearchSimple('test_empty_dict'))
     suite.addTest(TestWordSearchSimple('test_empty_grid'))
-    suite.addTest(TestWordSearch('test_bla'))
+    suite.addTest(TestWordSearchStress('test_stress'))
     return suite
 
 def main():

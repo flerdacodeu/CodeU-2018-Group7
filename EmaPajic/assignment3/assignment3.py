@@ -52,7 +52,7 @@ def create_grid(n,m,inputs):
         
         
 def main():
-    #main class if we want to check something that is not in the tests
+    #main function if we want to check something that is not in the tests
     print('Input the number of words in dictionary')
     nd = int(input())
     print('Input the words')

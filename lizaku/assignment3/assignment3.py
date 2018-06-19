@@ -1,4 +1,4 @@
-class Dictionary():
+class Dictionary:
     '''
     I implement the dictionary as a trie. As an input I give an array of words 
     that are then transformed into a trie. isWord and isPrefix are methods of the Dictionary.
@@ -42,7 +42,7 @@ class Dictionary():
         return True
 
 
-class Grid():
+class Grid:
     '''
     Grid is initially a 2D array, but I turn all values into Node objects
     and augment them with their neighbors
@@ -115,7 +115,7 @@ def find_words(grid, vocab):
     return words
             
         
-class Node():
+class Node:
     # node class for values in the grid
     def __init__(self, val, neighbors=[]):
         self.val = val

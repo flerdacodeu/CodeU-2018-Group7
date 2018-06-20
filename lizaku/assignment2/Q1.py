@@ -46,18 +46,25 @@ def find_ancestors(cur_node, key):
     if cur_node.value == key: #found the value
         return [key]
     if cur_node.value is None: # did not found the value, reaching the leaves
-        return None
+        raise KeyError('The value is not found')
     if cur_node.left is not None:
-        ancestors = find_ancestors(cur_node.left, key)
-        if ancestors:
-            ancestors.append(cur_node.value) # collecting ancestors if the value is found
-            return ancestors
+        try:
+            ancestors = find_ancestors(cur_node.left, key)
+            if ancestors:
+                ancestors.append(cur_node.value) # collecting ancestors if the value is found
+                return ancestors
+        except KeyError:
+            pass
     if cur_node.right is not None:
-        ancestors = find_ancestors(cur_node.right, key) # same for the right subtree
-        if ancestors:
-            ancestors.append(cur_node.value)
-            return ancestors
-    return None
+        try:
+            ancestors = find_ancestors(cur_node.right, key) # same for the right subtree
+            if ancestors:
+                ancestors.append(cur_node.value)
+                return ancestors
+        except KeyError:
+            pass
+    # end of traversal
+    raise KeyError('The value is not found')
 
 
 if __name__ == '__main__': 
@@ -65,8 +72,6 @@ if __name__ == '__main__':
     tree = BinaryTree()
     tree.root = create_tree(data)
     #tree.print_tree(tree.root)
-    ancestors = find_ancestors(tree.root, 6)
+    ancestors = find_ancestors(tree.root, 11)
     if ancestors:
         print(ancestors[1:]) # The first element is the key itself
-    
-    

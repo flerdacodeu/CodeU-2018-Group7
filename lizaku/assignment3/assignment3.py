@@ -3,13 +3,12 @@ class Dictionary:
     I implement the dictionary as a trie. As an input I give an array of words 
     that are then transformed into a trie. isWord and isPrefix are methods of the Dictionary.
     '''
-    def __init__(self, data, end='_end_'):
-        self._end = end
+    def __init__(self, data):
         self.data = self._make(data)
     
     def _make(self, words):
         # constructing the trie, it's in form of a dictionary (not very efficient though...)
-        _end = self._end
+        _end = '_end_'
         root = dict()
         for word in words:
             current_dict = root
@@ -19,7 +18,7 @@ class Dictionary:
         return root
     
     def isWord(self, word):
-        _end = self._end
+        _end = '_end_'
         current_dict = self.data
         for letter in word:
             if letter in current_dict:
@@ -126,4 +125,3 @@ if __name__ == '__main__':
     grid = Grid([['a', 'a', 'r'], ['t', 'c', 'd']])
     vocab = Dictionary(['a', 'card', 'cart', 'cat', 'car'])
     print(find_words(grid, vocab))
-    

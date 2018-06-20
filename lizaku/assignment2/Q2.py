@@ -10,17 +10,29 @@ def find_lca(cur_node, node1, node2):
     # Then LCA should be found in the left subtree, and I start to inspect it.
     # Otherwise, I start to inspect the right subtree.
     if cur_node is None:
-        return None
+        #return None
+        raise KeyError('At least one of the given values is not found in the tree')
     if cur_node.value == node1 or cur_node.value == node2: # reached one of the values
+        #print(cur_node.value, cur_node.left.value, cur_node.right.value)
         return cur_node
-    left_subtree = find_lca(cur_node.left, node1, node2)
-    right_subtree = find_lca(cur_node.right, node1, node2)
+    try:
+        left_subtree = find_lca(cur_node.left, node1, node2)
+    except KeyError:
+        left_subtree = None
+        #return None
+    try:
+        right_subtree = find_lca(cur_node.right, node1, node2)
+    except KeyError:
+        right_subtree = None
+        #return None
     if left_subtree is not None and right_subtree is not None: # found the node which has both values in the subtrees -- lca
         return cur_node.value
-    elif right_subtree is None:
+    elif right_subtree is None and left_subtree is not None:
         return left_subtree
-    else: 
+    elif left_subtree is None and right_subtree is not None: 
         return right_subtree 
+    else:
+        raise KeyError('At least one of the given values is not found in the tree')
         
 if __name__ == '__main__':
     data = [7, 3, 2, 1, 6, 5, None, None, 4, None, None, None, 8, None, None]    
@@ -28,4 +40,3 @@ if __name__ == '__main__':
     tree.root = create_tree(data)
     #tree.print_tree(tree.root)
     print(find_lca(tree.root, 5, 6))
-    

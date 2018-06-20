@@ -3,10 +3,7 @@ class Dictionary:
     I implement the dictionary as a trie. As an input I give an array of words 
     that are then transformed into a trie. isWord and isPrefix are methods of the Dictionary.
     '''
-    def __init__(self, data):
-        self.data = self._make(data)
-    
-    def _make(self, words):
+    def __init__(self, words):
         # constructing the trie, it's in form of a dictionary (not very efficient though...)
         _end = '_end_'
         root = dict()
@@ -15,7 +12,7 @@ class Dictionary:
             for letter in word:
                 current_dict = current_dict.setdefault(letter, {})
             current_dict[_end] = _end
-        return root
+        self.data = root
     
     def isWord(self, word):
         _end = '_end_'
@@ -47,9 +44,6 @@ class Grid:
     and augment them with their neighbors
     '''
     def __init__(self, data):
-        self.data = self._make(data)
-    
-    def _make(self, data):
         # turn values into Node objects
         for row in range(len(data)):
             for elem in range(len(data[row])):
@@ -81,7 +75,7 @@ class Grid:
                         down_neighbors.append(data[row + 1][let_ind + 1])
                 neighbors = up_neighbors + row_neighbors + down_neighbors
                 letter.neighbors = neighbors
-        return data
+        self.data = data
     
     def dfs(self, start, vocab):
         '''
@@ -93,7 +87,7 @@ class Grid:
             yield start.val
         stack = [(start, [start])]
         while stack:
-            (node, path) = stack.pop()
+            node, path = stack.pop()
             available = set(node.neighbors) - set(path)
             for neighbor in set(node.neighbors) - set(path):
                 stack.append((neighbor, path + [neighbor]))

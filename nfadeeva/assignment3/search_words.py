@@ -4,8 +4,8 @@ from typing import List
 class Grid:
     def __init__(self, cells: List[List[str]]):
         self.cells = cells
-        self.r = len(cells)
-        self.c = 0 if not cells else len(cells[0])
+        self.num_rows = len(cells)
+        self.num_cols = 0 if not cells else len(cells[0])
 
     def neighbours(self, i, j):
         """
@@ -15,9 +15,8 @@ class Grid:
         res = []
         for x in range(i - 1, i + 2):
             for y in range(j - 1, j + 2):
-                if x == i and y == j:
-                    continue
-                if 0 <= x < self.r and 0 <= y < self.c:
+                if not (x == i and y == j) and\
+                        0 <= x < self.num_rows and 0 <= y < self.num_cols:
                     res.append((x, y))
         return res
 
@@ -37,9 +36,10 @@ def _collect_words(grid, dictionary, i, j, used=None, prefix=""):
         words.add(prefix)
 
     # go through all valid neighbours of the given cell to collect more words
-    for x, y in grid.neighbours(i, j):
-        if (x, y) not in used and dictionary.is_prefix(prefix + cells[x][y]):
-            words.update(_collect_words(grid, dictionary, x, y, used, prefix))
+    if dictionary.is_prefix(prefix):
+        for x, y in grid.neighbours(i, j):
+            if (x, y) not in used and dictionary.is_prefix(prefix + cells[x][y]):
+                words.update(_collect_words(grid, dictionary, x, y, used, prefix))
     return words
 
 
@@ -51,7 +51,7 @@ def search_words(grid, dictionary):
     """
 
     words = set()
-    for i in range(grid.r):
-        for j in range(grid.c):
+    for i in range(grid.num_rows):
+        for j in range(grid.num_cols):
             words.update(_collect_words(grid, dictionary, i, j))
     return words

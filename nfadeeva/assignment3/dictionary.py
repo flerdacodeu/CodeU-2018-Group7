@@ -21,11 +21,11 @@ class Dictionary:
 
         self.root = Node()
         for word in data:
-            self.put(word)
+            self.add(word)
 
-    def put(self, word):
+    def add(self, word):
         """
-        Put the word into the dictionary
+        Add the word into the dictionary
         """
 
         node = self.root

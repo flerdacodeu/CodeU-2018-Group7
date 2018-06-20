@@ -9,16 +9,16 @@ class Test(unittest.TestCase):
         self.d = Dictionary(['CAR', 'CAT', 'CARD', 'CART'])
 
     # tests for the Dictionary class
-    def test_is_word_true(self):
+    def test_word_is_in_dictionary(self):
         self.assertTrue(self.d.is_word('CAR'))
 
-    def test_is_word_false(self):
+    def test_word_is_not_in_dictionary(self):
         self.assertFalse(self.d.is_word('CA'))
 
-    def test_is_prefix_true(self):
+    def test_prefix_is_in_dictionary(self):
         self.assertTrue(self.d.is_prefix('CA'))
 
-    def test_is_prefix_false(self):
+    def test_prefix_is_not_in_dictionary(self):
         self.assertFalse(self.d.is_prefix('D'))
 
     # tests for the whole solution

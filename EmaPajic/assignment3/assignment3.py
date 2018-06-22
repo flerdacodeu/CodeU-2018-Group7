@@ -16,23 +16,26 @@ def out_of_bounds(grid,i,j,n,m,visited):
         return True
     return False
 
-def find_words_from_grid(grid,i,j,n,m,word,dictionary,foundWords,visited):
+def find_words_from_grid(grid,i,j,n,m,dictionary,found_words,word = None,visited = None):
     #function that finds all words from grid that are in dictionary and returns them in set, i and j are starting positions of search, word is our current word found
+    if word is None:
+        word = ""
+    if visited is None:
+        visited = {}
+        for x in range(0, n):
+            for y in range(0, m):
+                visited[(x, y)] = 0
+    
     if out_of_bounds(grid,i,j,n,m,visited):
         return
     word += grid[i][j]
     visited[tuple((i,j))] = 1
     if dictionary.is_word(word):
-        foundWords.add(word)
+        found_words.add(word)
     elif dictionary.is_prefix(word):
-        find_words_from_grid(grid,i,j+1,n,m,word,dictionary,foundWords,visited)
-        find_words_from_grid(grid,i,j-1,n,m,word,dictionary,foundWords,visited)
-        find_words_from_grid(grid,i+1,j,n,m,word,dictionary,foundWords,visited)
-        find_words_from_grid(grid,i-1,j,n,m,word,dictionary,foundWords,visited)
-        find_words_from_grid(grid,i-1,j-1,n,m,word,dictionary,foundWords,visited)
-        find_words_from_grid(grid,i-1,j+1,n,m,word,dictionary,foundWords,visited)
-        find_words_from_grid(grid,i+1,j-1,n,m,word,dictionary,foundWords,visited)
-        find_words_from_grid(grid,i+1,j-1,n,m,word,dictionary,foundWords,visited)
+        for i1 in range(-1,2):
+            for j1 in range(-1,2):
+                find_words_from_grid(grid,i+i1,j+j1,n,m,dictionary,found_words,word,visited)
     visited[tuple((i,j))] = 0
 
 

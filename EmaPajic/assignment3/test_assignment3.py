@@ -25,15 +25,16 @@ class TestQ2(unittest.TestCase):
                 self.visited[(x, y)] = 0
         
     def test_empty(self):
-        find_words_from_grid(self.grid,0,0,3,3,self.word,self.empty_dictionary,self.foundWords,self.visited)
+        find_words_from_grid(self.grid,0,0,3,3,self.empty_dictionary,self.foundWords)
         self.assertEqual(set(),self.foundWords)
         
     def test_normal(self):
-        find_words_from_grid(self.grid,0,0,3,3,self.word,self.dictionary1,self.foundWords,self.visited)
+        find_words_from_grid(self.grid,0,0,3,3,self.dictionary1,self.foundWords)
         self.assertEqual(set(['ema','ema','eganam']),self.foundWords)
         self.foundWords.clear();
-        find_words_from_grid(self.grid,0,2,3,3,self.word,self.dictionary2,self.foundWords,self.visited)
+        find_words_from_grid(self.grid,0,2,3,3,self.dictionary2,self.foundWords)
         self.assertEqual(set(['ana','ama','ame']),self.foundWords)
+
 
 def suite():
     suite = unittest.TestSuite()

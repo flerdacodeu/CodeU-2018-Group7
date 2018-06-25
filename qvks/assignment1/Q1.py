@@ -11,9 +11,9 @@ def is_anagram(s1, s2):
 	return sorted(s1)==sorted(s2)
 
 def main():
-	print(is_anagram("ab", "ba"))
-	print(is_anagram("ab", "bab"))
-	print(is_anagram("AbC", "CBA"))
+	assert(is_anagram("ab", "ba"))
+	assert(not is_anagram("ab", "bab"))
+	assert(is_anagram("AbC", "CBA"))
 
 main()
 

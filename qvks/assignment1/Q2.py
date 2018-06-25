@@ -2,7 +2,10 @@ class Node:
 	def __init__(self, x):
 		self.value = x
 		self.next = None
-
+# Keeps track of two pointers, where the first pointer is k 
+# elements ahead of the second. 
+# Hence when the second pointer reaches the end, 
+# the first pointer is at the kth last element.
 def get_kth_last_element(self, k):
 	if k<0:
 		return None

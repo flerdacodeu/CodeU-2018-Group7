@@ -11,9 +11,14 @@ class Test(unittest.TestCase):
     
     def setUp(self):
         self.tiles_empty = []
-        self.tiles1 = [[False,False],[False,False]]
+        self.tiles1 = [[False,False],
+                       [False,False]]
         self.tiles2 = [[True,True]]
-        self.tiles3 = [[True,True,True,True,True],[True,False,False,False,True],[True,False,True,False,True],[True,False,False,False,True],[True,True,True,True,True]]
+        self.tiles3 = [[True , True , True , True , True],
+                        [True , False, False, False, True],
+                        [True , False, True , False, True],
+                        [True , False, False, False, True],
+                        [True , True , True , True , True]]
         
     def test_empty(self):
         self.assertEqual(0,count_islands(0,0,self.tiles_empty))

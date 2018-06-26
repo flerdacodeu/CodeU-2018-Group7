@@ -7,8 +7,10 @@
 def count_islands(rows,columns,tiles):
     """
     I am assuming that we can change tiles (set some values to false).
-    If we couldn't do that, we could just make another matrix where we would store flags so that we don't visit same tile twice.
-    In this function we are just going through matrix and if we find a part of island we call function find_all_parts_of island to set all parts of that island to false
+    If we couldn't do that, we could just make another matrix where
+    we would store flags so that we don't visit same tile twice.
+    In this function we are just going through matrix and if we find a part of island
+    we call function find_all_parts_of island to set all parts of that island to false
     """
     numOfIslands = 0
     for i in range(0,rows):
@@ -20,9 +22,7 @@ def count_islands(rows,columns,tiles):
 
 def valid_index(rows,columns,i,j):
     # check if index is out of range
-    if i < 0 or i >= rows or j < 0 or j >= columns:
-        return False
-    return True
+    return not (i < 0 or i >= rows or j < 0 or j >= columns)
     
 def find_all_parts_of_island(rows,columns,i,j,tiles):
     #I am using dfs to find all connected tiles to one we found before we called this function from count_islands

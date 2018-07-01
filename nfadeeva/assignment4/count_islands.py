@@ -34,5 +34,3 @@ def count_islands(num_rows, num_cols, input_array: List[bool]):
                 num_islands += 1
                 dfs(num_rows, num_cols, input_array, x, y)
     return num_islands
-
-

@@ -68,7 +68,11 @@ class Grid:
         return islands, len(islands)
         
 class Node:
-    # node class for values in the grid
+    ''' Node class for values in the grid
+    val: value of the node (True, False)
+    i:  ordinal number for tile in the grid; for printing the result and debugging purposes
+    neighbors: set with horizontal and vertical neighbors of the tile in the grid
+    '''
     def __init__(self, val, i, neighbors):
         self.val = val
         self.i = i

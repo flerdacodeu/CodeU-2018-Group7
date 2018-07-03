@@ -32,8 +32,8 @@ class TestChessMap(unittest.TestCase):
 class TestInnerSea(unittest.TestCase):
     def setUp(self):
         self.map_ = Map([[True, True, True, True],
-            [True, False, False, True],
-            [True, True, True, True]])
+                         [True, False, False, True],
+                         [True, True, True, True]])
 
     def test_inner_sea(self):
         self.assertEqual(count_islands(self.map_), 1)
@@ -41,10 +41,10 @@ class TestInnerSea(unittest.TestCase):
 class TestInnerIsland(unittest.TestCase):
     def setUp(self):
         self.map_ = Map([[True, True, True, True, True],
-            [True, False, False, False, True],
-            [True, False, True, False, True],
-            [True, False, False, False, True],
-            [True, True, True, True, True]])
+                         [True, False, False, False, True],
+                         [True, False, True, False, True],
+                         [True, False, False, False, True],
+                         [True, True, True, True, True]])
 
     def test_inner_island(self):
         self.assertEqual(count_islands(self.map_), 2)
@@ -52,9 +52,9 @@ class TestInnerIsland(unittest.TestCase):
 class TestExample(unittest.TestCase):
     def setUp(self):
         self.map_ = Map([[False, True, False, True],
-            [True, True, False, False],
-            [False, False, True, False],
-            [False, False, True, False]])
+                         [True, True, False, False],
+                         [False, False, True, False],
+                         [False, False, True, False]])
 
     def test_example_map(self):
         self.assertEqual(count_islands(self.map_), 3)

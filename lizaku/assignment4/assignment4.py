@@ -1,13 +1,9 @@
-import itertools
-
 class Grid:
     '''
     Grid is initially a 2D array, but I turn all values into Node objects
     and augment them with their neighbors
     '''
     def __init__(self, data):
-        # if the user provides the grid that is not valid
-        
         # turn values into Node objects
         i = 0
         for row in range(len(data)):
@@ -20,7 +16,7 @@ class Grid:
             for row in range(len(data)):
                 for ind in range(len(data[row])):
                     tile = data[row][ind]
-                    # dinf up neighbor
+                    # find up neighbor
                     if row != 0:
                         tile.neighbors.add(data[row - 1][ind])
                     # find left neighbor
@@ -37,34 +33,37 @@ class Grid:
             raise IndexError('Different number of tiles in rows')
     
     def find_islands(self):
+        '''
+        Algorithm:
+        1. Iterate over tiles and check if the tile is water or island. Work only with island tiles. 
+        2. For the first found island tile initialize the array. 
+        3. For each island tile iterate over all islands and find overlap between them and the current tile's neighbors.
+        4. If there's an overlap, check if there's some island that can be merged, 
+        merge it and remove redundant current island.
+        5. If no island to merge, add the tile to the current island, remember that island for merging.
+        6. If this tile has no connections to other island, create a separate one.
+        '''
         islands = []
-        # I iterate over tiles
+        
         for row in self.data:
             for tile in row:
-                # if tile is False then this is water, and I do not need to do anything
                 if tile.val:
-                    # for the first found island tile I initialize the array
                     if islands == []:
                         islands.append([tile])
                     else:
-                        part = False # check if this tile is already part of some islands to not create double islands
-                        prev_island = False # check if I need to merge this island with some other one
+                        part = False 
+                        prev_island = False 
                         for island in range(len(islands)):
-                            # iterate over all islands and find overlap between them and the current tile's neighbors
                             connection = set(islands[island]) & tile.neighbors
-                            # if there's an overlap
                             if len(connection) > 0:
-                                # check if I have some island with which I can merge: ex., [1, 2, 3] and [4, 2] 
                                 if prev_island:
                                     islands[island] = set(islands[island]) | set(prev_island)
-                                    islands.remove(prev_island) # remove redundant island because it is stored in the merged one
+                                    islands.remove(prev_island) 
                                 else:
-                                    # I don't have any islands to merge, but I found a connection anyway
-                                    part = True # remember that this tile is part of some island, add it 
+                                    part = True 
                                     islands[island].append(tile)
-                                    prev_island = islands[island] # remember the created island for merging
+                                    prev_island = islands[island] 
                         if not part:
-                            # if this tile has no connections to other islands, create a separate one
                             islands.append([tile])
         return islands, len(islands)
         

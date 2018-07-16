@@ -7,7 +7,8 @@ class Test(unittest.TestCase):
 
     def setUp(self):
         self.dictionary = ['ART', 'RAT', 'CAT', 'CAR']
-        self.g = Graph(self.dictionary)
+        self.g = Graph()
+        self.g.build_from_dictionary(self.dictionary)
         
     
     # Tests for the simple function with rules
@@ -20,7 +21,8 @@ class Test(unittest.TestCase):
     # test if the dictionary is empty
     def test_empty_dic(self):
         dictionary = []
-        g = Graph(dictionary)
+        g = Graph()
+        g.build_from_dictionary(dictionary)
         alphabet1 = compute_alphabet(dictionary)
         alphabet2 = g.topological_sort()
         self.assertEqual(alphabet1, [])
@@ -34,7 +36,7 @@ class Test(unittest.TestCase):
     # Tests for the graph solution
     def test_topological_sort(self):
         alphabet = self.g.topological_sort()
-        self.assertTrue(alphabet in [['A', 'T', 'R', 'C'], ['T', 'A', 'R', 'C']]);
+        self.assertIn(alphabet, [['A', 'T', 'R', 'C'], ['T', 'A', 'R', 'C']]);
 
 
 if __name__ == '__main__':

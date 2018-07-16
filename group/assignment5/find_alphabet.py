@@ -13,7 +13,7 @@ class Graph:
         self.vertices = set()
 
     def add_edge(self, u, v):
-        self.adj[u] = v
+        self.adjacency_list[u] = v
         self.vertices.add(u)
         self.vertices.add(v)
 
@@ -58,7 +58,7 @@ def dfs(graph, v, visited, order):
     #              1 - visited but haven't visited all vertices in it's subtree
     #              2 - all vertices in it's subtree were visited
     visited[v] = 1
-    graph_list = graph.adj
+    graph_list = graph.adjacency_list
     for neighbour in graph_list[v]:
 
         # neighbour hasn't been visited yet
@@ -67,9 +67,10 @@ def dfs(graph, v, visited, order):
 
         # cycle was found => no topological sort
         elif visited[neighbour] == 1:
-            return None
+            return False
     visited[v] = 2
     order.appendleft(v)
+    return True
 
 
 def topological_sort(graph, v):
@@ -84,6 +85,6 @@ def topological_sort(graph, v):
     # if there is a cycle in the given graph => raise Error and return None
     for v in graph.vertices:
         if not visited[v]:
-            if dfs(graph, v, visited, order) is None:
+            if not dfs(graph, v, visited, order):
                 return None
-    return order
+    return list(order)

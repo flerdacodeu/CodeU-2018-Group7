@@ -14,7 +14,7 @@ class Test(unittest.TestCase):
 
     def test_inconsistent_dict(self):
         input_dict = ['ab', 'bb', 'ba']
-        self.assertEqual(find_alphabet(input_dict), None)
+        self.assertRaises(BaseException, find_alphabet(input_dict))
 
 if __name__ == '__main__':
     unittest.main()

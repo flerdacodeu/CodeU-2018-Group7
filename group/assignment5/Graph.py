@@ -5,8 +5,10 @@
 """
 
 class GraphNode:
-    """for each graph node we have it's data (letter in this case), number of parents (we need that for topsort) and set of children.
-    We just need number of parents since all parent-child relationships are stored in children set
+    """for each graph node we have it's data (letter in this case),
+    number of parents (we need that for topsort) and set of children.
+    We just need number of parents since all parent-child relationships
+    are stored in children set
     """
     
     def __init__(self, data, num_of_parents = 0):
@@ -16,9 +18,6 @@ class GraphNode:
         
     def __hash__(self):
         return hash((self.data))
-    
-   # def __eq__(self, other):
-    #    return self.data == other.get_data()
         
     def get_data(self):
         return self.data
@@ -34,9 +33,7 @@ class GraphNode:
             self.children.add(child)
             
     def add_parent(self):
-    #increase number of parents for this node
         self.num_of_parents += 1
     
     def remove_parent(self):
-    #decrease number of parents for this node
         self.num_of_parents -= 1

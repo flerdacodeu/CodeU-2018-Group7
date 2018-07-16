@@ -16,13 +16,13 @@ def find_first_different_letter(word1, word2):
         i += 1
     return -1
 
-def topsort(lettersGraph):
+def topsort(letters_graph):
     #topological sort of graph that returns one valid solution
     alphabet = []
     queue = []
-    for letter in lettersGraph:
-        if lettersGraph[letter].get_number_of_parents() == 0:
-            queue.append(lettersGraph[letter])
+    for letter in letters_graph:
+        if letters_graph[letter].get_number_of_parents() == 0:
+            queue.append(letters_graph[letter])
     
     i = 0
     qlen = len(queue)
@@ -30,40 +30,42 @@ def topsort(lettersGraph):
         alphabet.append(queue[i].get_data())
         children = queue[i].get_children()
         for child in children:
-            lettersGraph[child].remove_parent()
-            if lettersGraph[child].get_number_of_parents() == 0:
-                queue.append(lettersGraph[child])
+            letters_graph[child].remove_parent()
+            if letters_graph[child].get_number_of_parents() == 0:
+                queue.append(letters_graph[child])
                 qlen += 1
         i += 1
-    """if dictionary is consistent we will go through all lettersGraph,
+    """if dictionary is consistent we will go through all letters_graph,
     so if we haven't done that dictionary is inconsistent
     """
-    if qlen < len(lettersGraph):
+    if qlen < len(letters_graph):
         raise BaseException("The given dictionary is inconsistent")
     return alphabet
 
 def find_alphabet(dictionary):
-    """finds alphabet of given dictionary.It will return just one of the valid dictionaries.
-    This function created directed graph where nodes are lettersGraph and edges are relations between lettersGraph
+    """finds alphabet of given dictionary.
+    It will return just one of the valid dictionaries.
+    This function created directed graph where nodes are letters_graph
+    and edges are relations between letters_graph
     (edge from a to b means that a is before b)
     """
-    lettersGraph = {}
+    letters_graph = {}
     numOfWords = len(dictionary)
     
     #creating graph node for every letter that exists in dictionary
     for word in dictionary:
         for i in range(0,len(word)):
-            if not (word[i] in lettersGraph):
-                lettersGraph[word[i]] = GraphNode(word[i])
+            if not (word[i] in letters_graph):
+                letters_graph[word[i]] = GraphNode(word[i])
            
     #adding edges to graph 
     for i in range (1,numOfWords):
         j = find_first_different_letter(dictionary[i-1],dictionary[i])
         if j != -1:
-            lettersGraph[dictionary[i-1][j]].add_child(dictionary[i][j])
-            lettersGraph[dictionary[i][j]].add_parent()
+            letters_graph[dictionary[i-1][j]].add_child(dictionary[i][j])
+            letters_graph[dictionary[i][j]].add_parent()
             
-    return topsort(lettersGraph)
+    return topsort(letters_graph)
         
 def main():
     
@@ -74,5 +76,4 @@ def main():
         dictionary.append(word)
     alphabet = find_alphabet(dictionary)
     print(alphabet)
-
     

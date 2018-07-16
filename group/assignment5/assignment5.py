@@ -19,26 +19,25 @@ def find_first_different_letter(word1, word2):
 def topsort(letters_graph):
     #topological sort of graph that returns one valid solution
     alphabet = []
-    queue = []
+    q = queue.Queue()
     for letter in letters_graph:
         if letters_graph[letter].get_number_of_parents() == 0:
-            queue.append(letters_graph[letter])
+            q.put(letters_graph[letter])
     
-    i = 0
-    qlen = len(queue)
-    while i < qlen:
-        alphabet.append(queue[i].get_data())
-        children = queue[i].get_children()
+    num_of_visited_letters = 0
+    while not q.empty():
+        curr_letter = q.get()
+        num_of_visited_letters += 1
+        alphabet.append(curr_letter.get_data())
+        children = curr_letter.get_children()
         for child in children:
             letters_graph[child].remove_parent()
             if letters_graph[child].get_number_of_parents() == 0:
-                queue.append(letters_graph[child])
-                qlen += 1
-        i += 1
+                q.put(letters_graph[child])
     """if dictionary is consistent we will go through all letters_graph,
     so if we haven't done that dictionary is inconsistent
     """
-    if qlen < len(letters_graph):
+    if num_of_visited_letters < len(letters_graph):
         raise BaseException("The given dictionary is inconsistent")
     return alphabet
 

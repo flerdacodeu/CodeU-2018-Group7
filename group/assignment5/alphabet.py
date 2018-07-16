@@ -7,8 +7,8 @@ def extract_rule(first_string, second_string):
     a symbol from the second string
     """
     i = 0
-    while ((i < min(len(first_string), len(second_string))) and
-           (first_string[i] == second_string[i])):
+    while (i < min(len(first_string), len(second_string)) and
+           first_string[i] == second_string[i]):
         i += 1
 
     if i == min(len(first_string), len(second_string)):
@@ -19,7 +19,7 @@ def extract_all_rules(dictionary):
     #rules = list()
     for i in range(1, len(dictionary)):
         rule = extract_rule(dictionary[i - 1], dictionary[i])
-        if rule:
+        if rule is not None:
             yield rule
 
 def compute_alphabet(dictionary):
@@ -34,6 +34,8 @@ def compute_alphabet(dictionary):
             graph.add_vertex(symbol)
     for rule in rules:
         graph.add_edge(rule[1], rule[0])
+    #print(graph.vertices)
+    #print(graph.edges)
     try:
         alphabet = graph.topological_sort()
     except:

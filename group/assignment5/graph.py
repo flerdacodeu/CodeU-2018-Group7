@@ -1,49 +1,46 @@
+from collections import OrderedDict
+
 class Graph():
     def __init__(self):
-        self.edges = list()
-        self.vertices = list()
+        self.edges = dict()
+        self.vertices = set()
 
     def add_vertex(self, vertex):
         if vertex in self.vertices:
             return
-        self.vertices.append(vertex)
-        self.edges.append(list())
+        self.vertices.add(vertex)
+        self.edges[vertex] = list()
 
     def add_edge(self, from_, to_):
-        if from_ not in self.vertices:
-            self.vertices.append(from_)
-        if to_ not in self.vertices:
-            self.vertices.append(to_)
-        index_from = self.vertices.index(from_)
-        index_to = self.vertices.index(to_)
-        self.edges[index_from].append(index_to)
+        self.add_vertex(from_)
+        self.add_vertex(to_)
+        self.edges[from_].append(to_)
 
     def topological_sort(self):
-        colors = ['white' for i in range(len(self.vertices))]
+        colors = dict.fromkeys(self.vertices, 'white')
         time = 0
-        exit_times = [0 for i in range(len(self.vertices))]
-        for ind, color in enumerate(colors):
+        exit_times = dict.fromkeys(self.vertices, 0)
+        for vertex, color in colors.items():
             if color == 'white':
                 try:
-                    time = self._dfs(ind, exit_times, time, colors)
+                    time = self._dfs(vertex, exit_times, time, colors)
                 except ValueError as err:
                     raise ValueError(err)
 
-        order = sorted(zip(self.vertices, exit_times), key=lambda x: x[1])
+        order = sorted(exit_times.items(), key=lambda x: x[1])
         return [x[0] for x in order]
 
-    def _dfs(self, vertex_ind, exit_times, time=0, colors=None):
+    def _dfs(self, vertex, exit_times, time=0, colors=None):
         if colors is None:
-            colors = ['white' for i in range(len(self.vertices))]
-        children = self.edges[vertex_ind]
-        colors[vertex_ind] = 'gray'
+            colors = dict.fromkeys(self.vertices, 'white')
+        children = self.edges[vertex]
+        colors[vertex] = 'gray'
         for child in children:
             if colors[child] == 'white':
                 time = self._dfs(child, exit_times, time, colors)
             elif colors[child] == 'gray':
-                # CYCLE
                 raise ValueError('There is a cycle in the graph')
         time += 1
-        colors[vertex_ind] = 'black'
-        exit_times[vertex_ind] = time
+        colors[vertex] = 'black'
+        exit_times[vertex] = time
         return time

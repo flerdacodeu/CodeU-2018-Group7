@@ -7,7 +7,9 @@ class TestExample(unittest.TestCase):
         self.dictionary = ['ART', 'RAT', 'CAT', 'CAR']
 
     def test_example(self):
-        self.assertEqual(compute_alphabet(self.dictionary), ['A', 'T', 'R', 'C'])
+        self.assertIn(compute_alphabet(self.dictionary), 
+                [['A', 'T', 'R', 'C'],
+                 ['T', 'A', 'R', 'C']])
 
 class TestInconsistentDict(unittest.TestCase):
     def setUp(self):

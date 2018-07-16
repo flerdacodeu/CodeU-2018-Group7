@@ -9,7 +9,7 @@ from collections import deque
 
 class Graph:
     def __init__(self):
-        self.adj = defaultdict(list)
+        self.adjacency_list = defaultdict(list)
         self.vertices = set()
 
     def add_edge(self, u, v):
@@ -45,9 +45,11 @@ def find_alphabet(dictionary: List[str]):
     graph = create_graph(dictionary)
     # return the characters in topological order as the requirement alphabet
     if graph.vertices:
-        return topological_sort(graph, list(graph.vertices)[0])
-    else:
-        return []
+        result = topological_sort(graph, list(graph.vertices)[0])
+        if result is None:
+            raise BaseException("The given dictionary is inconsistent")
+        return result
+    return []
 
 
 def dfs(graph, v, visited, order):
@@ -63,15 +65,18 @@ def dfs(graph, v, visited, order):
         if not visited[neighbour]:
             dfs(graph, neighbour, visited, order)
 
-        # cycle was found => no topological sort => dictionary is inconsistent
+        # cycle was found => no topological sort
         elif visited[neighbour] == 1:
-            raise BaseException("The given dictionary is inconsistent")
             return None
     visited[v] = 2
     order.appendleft(v)
 
 
 def topological_sort(graph, v):
+    """
+    :returns: None if there is no topological sort
+    or the list of vertices in topological sort order
+    """
     visited = dict.fromkeys(graph.vertices, 0)
     order = deque()
 
@@ -79,5 +84,6 @@ def topological_sort(graph, v):
     # if there is a cycle in the given graph => raise Error and return None
     for v in graph.vertices:
         if not visited[v]:
-            dfs(graph, v, visited, order)
+            if dfs(graph, v, visited, order) is None:
+                return None
     return order

@@ -1,5 +1,5 @@
-from assignment5.find_alphabet import find_alphabet
 import unittest
+from assignment5.find_alphabet import find_alphabet
 
 
 class Test(unittest.TestCase):

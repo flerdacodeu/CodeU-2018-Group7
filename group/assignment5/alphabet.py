@@ -16,7 +16,6 @@ def extract_rule(first_string, second_string):
     return (first_string[i], second_string[i])
 
 def extract_all_rules(dictionary):
-    #rules = list()
     for i in range(1, len(dictionary)):
         rule = extract_rule(dictionary[i - 1], dictionary[i])
         if rule is not None:
@@ -34,8 +33,6 @@ def compute_alphabet(dictionary):
             graph.add_vertex(symbol)
     for rule in rules:
         graph.add_edge(rule[1], rule[0])
-    #print(graph.vertices)
-    #print(graph.edges)
     try:
         alphabet = graph.topological_sort()
     except:

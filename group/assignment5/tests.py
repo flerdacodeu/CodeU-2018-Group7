@@ -1,4 +1,5 @@
 import unittest
+import string
 from assignment5.find_alphabet import find_alphabet
 
 
@@ -15,6 +16,11 @@ class Test(unittest.TestCase):
     def test_inconsistent_dict(self):
         input_dict = ['ab', 'bb', 'ba']
         self.assertRaises(BaseException, find_alphabet(input_dict))
+
+    def test_alphabet(self):
+        input_dict = [s for s in string.ascii_uppercase]
+        self.assertEqual(input_dict, find_alphabet(self.dictionary))
+
 
 if __name__ == '__main__':
     unittest.main()

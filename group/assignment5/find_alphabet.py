@@ -1,6 +1,6 @@
 from typing import List
 from collections import deque
-from graph import build_graph
+from assignment5.graph import build_graph
 
 
 def find_alphabet(dictionary: List[str]):

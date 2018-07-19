@@ -28,6 +28,22 @@ class Graph():
         return [x[0] for x in order]
 
     def _dfs(self, vertex, exit_times, time=0, colors=None):
+        """Implement depth first search algorithms starting in some vertex.
+
+        Args:
+            vertex: Starting vertex.
+            exit_times: For each vertex a time when we finish processing this vertex.
+            time: Current time (how many vertices are already visited).
+            colors: For each vertex stores its color. white if the vertex is not visited, gray if
+            the vertexx is visited but not all its children are visited, black if the vertex and
+            all its children are visited.
+
+        Returns:
+            Current time.
+
+        Raises:
+            ValueError: if the graph has a cycle
+        """
         if colors is None:
             colors = dict.fromkeys(self.vertices, 'white')
         children = self.edges[vertex]

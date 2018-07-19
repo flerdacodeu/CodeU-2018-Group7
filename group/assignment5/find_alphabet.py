@@ -1,9 +1,13 @@
+"""
+-Find the alphabet on the given dictionary + identify inconsistent dictionaries
+"""
 from typing import List
 from assignment5.graph import *
 
 
 def build_graph(dictionary):
-    """Given a lexicographically ordered list of words compares pairs of subsequent words and
+    """
+    Given a lexicographically ordered list of words compares pairs of subsequent words and
     adds an edge f -> s in a graph if letter f is lexicographically smaller than s
     """
     graph = Graph()
@@ -19,7 +23,7 @@ def build_graph(dictionary):
 
 def find_alphabet(dictionary: List[str]):
     """
-    finds the alphabet by the given dictionary
+    Finds the alphabet by the given dictionary
     :param dictionary: List of words
     :returns: List of characters or None if the given dictionary is inconsistent
     """

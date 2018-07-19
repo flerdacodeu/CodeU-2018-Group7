@@ -3,6 +3,21 @@ from collections import deque
 from assignment5.graph import build_graph
 
 
+def build_graph(dictionary):
+    """Given a lexicographically ordered list of words compares pairs of subsequent words and
+    adds an edge f -> s in a graph if letter f is lexicographically smaller than s
+    """
+    graph = Graph()
+    for i in range(len(dictionary)-1):
+        first_word = dictionary[i]
+        second_word = dictionary[i+1]
+        for first_ch, second_ch in zip(first_word, second_word):
+            if first_ch != second_ch:
+                graph.add_edge(first_ch, second_ch)
+                break
+    return graph
+
+
 def find_alphabet(dictionary: List[str]):
     """
     finds the alphabet by the given dictionary

@@ -1,5 +1,6 @@
 from collections import defaultdict
 
+
 class Graph:
     def __init__(self):
         self.adjacency_list = defaultdict(list)

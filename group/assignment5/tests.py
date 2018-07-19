@@ -19,7 +19,7 @@ class Test(unittest.TestCase):
 
     def test_alphabet(self):
         input_dict = [s for s in string.ascii_uppercase]
-        self.assertEqual(input_dict, find_alphabet(self.dictionary))
+        self.assertEqual(input_dict, find_alphabet(input_dict))
 
 
 if __name__ == '__main__':

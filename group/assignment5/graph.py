@@ -22,10 +22,7 @@ class Graph():
         exit_times = dict.fromkeys(self.vertices, 0)
         for vertex, color in colors.items():
             if color == 'white':
-                try:
-                    time = self._dfs(vertex, exit_times, time, colors)
-                except ValueError as err:
-                    raise ValueError(err)
+                time = self._dfs(vertex, exit_times, time, colors)
 
         order = sorted(exit_times.items(), key=lambda x: x[1])
         return [x[0] for x in order]

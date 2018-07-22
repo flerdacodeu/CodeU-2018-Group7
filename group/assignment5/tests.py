@@ -1,7 +1,7 @@
 import unittest
 import string
 from assignment5.find_alphabet import find_alphabet
-
+from assignment5.find_all_alphabets import find_all_alphabets
 
 class Test(unittest.TestCase):
     def test_example(self):
@@ -35,6 +35,22 @@ class Test(unittest.TestCase):
         self.assertSetEqual(
             find_alphabet(input_dict, return_constraints=True), set())
 
+    def test_example_all(self):
+        input_dict = ['ART', 'RAT', 'CAT', 'CAR']
+        self.assertEqual(find_all_alphabets(input_dict), {'ATRC', 'TARC'})
+
+    def test_one_word(self):
+        input_dict = ['ABCDEF']
+        self.assertEqual(len(find_all_alphabets(input_dict)), 720)
+
+    def test_two_components(self):
+        input_dict = ['AB', 'BC', 'BD']
+        self.assertEqual(find_all_alphabets(input_dict), {'ABCD', 'ACBD', 'ACDB', 'CDAB',
+            'CADB', 'CABD'})
+
+    def test_all_alphabets(self):
+        input_dict = [s for s in string.ascii_uppercase]
+        self.assertEqual(find_all_alphabets(input_dict), {string.ascii_uppercase})
 
 if __name__ == '__main__':
     unittest.main()

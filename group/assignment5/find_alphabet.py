@@ -45,7 +45,7 @@ def find_alphabet(dictionary: List[str], return_constraints=False):
     # try to build alphabet from the input dictionary
     # then if it is inconsistent try to remove every
     # word and build the alphabet again then every 2 words etc
-    result = []
+    alphabet = []
     for i in range(len(dictionary)):
         combinations_words = combinations(dictionary, i)
         for words_to_remove in combinations_words:
@@ -54,11 +54,11 @@ def find_alphabet(dictionary: List[str], return_constraints=False):
                               and word_is_consistent(word)]
             graph = build_graph(new_dictionary)
             if graph.vertices:
-                result = graph.topological_sort(list(graph.vertices)[0])
-                if result is not None:
+                alphabet = graph.topological_sort(list(graph.vertices)[0])
+                if alphabet is not None:
                     if return_constraints:
                         return set(words_to_remove)
                 if not return_constraints:
-                    return result
+                    return alphabet
 
-    return result
+    return alphabet

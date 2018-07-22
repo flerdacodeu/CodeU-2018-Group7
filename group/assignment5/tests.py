@@ -13,6 +13,10 @@ class Test(unittest.TestCase):
         input_dict = []
         self.assertEqual(find_alphabet(input_dict), [])
 
+    def test_one_word(self):
+        input_dict = ['a']
+        self.assertEqual(find_alphabet(input_dict), ['a'])
+
     def test_inconsistent_dict_none(self):
         input_dict = ['ab', 'bb', 'ba']
         self.assertIsNone(find_alphabet(input_dict), None)

@@ -19,7 +19,7 @@ class Test(unittest.TestCase):
 
     def test_inconsistent_dict_none(self):
         input_dict = ['ab', 'bb', 'ba']
-        self.assertIsNone(find_alphabet(input_dict), None)
+        self.assertIsNone(find_alphabet(input_dict))
 
     def test_inconsistent_dict_return_constraints(self):
         input_dict = ['ab', 'bb', 'ba']

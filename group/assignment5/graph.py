@@ -21,7 +21,7 @@ class Graph:
 
         :param v: the start vertex
         :param order: the order of letters in alphabet
-        :returns: True if there are not any cycle in the graph else returns False
+        :returns: True if there is not any cycle in the graph else returns False
         """
 
         # visited - array of marks for every vertex

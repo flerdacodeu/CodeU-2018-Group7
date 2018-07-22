@@ -15,6 +15,15 @@ class Graph:
         self.parents[v].append(u)
 
     def dfs(self, v, visited, order):
+        """
+        Start from the v vertex and do dfs recursively,
+        when the all neighbours of bertex was visited - add it to the order list
+
+        :param v: the start vertex
+        :param order: the order of letters in alphabet
+        :returns: True if there are not any cycle in the graph else returns False
+        """
+
         # visited - array of marks for every vertex
         # visited[v] = 0 - v hasn't been visited yet
         #              1 - visited but haven't visited all vertices in it's subtree

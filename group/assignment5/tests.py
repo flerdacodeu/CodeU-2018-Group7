@@ -13,13 +13,23 @@ class Test(unittest.TestCase):
         input_dict = []
         self.assertEqual(find_alphabet(input_dict), [])
 
-    def test_inconsistent_dict(self):
+    def test_inconsistent_dict_none(self):
         input_dict = ['ab', 'bb', 'ba']
-        self.assertRaises(BaseException, find_alphabet(input_dict))
+        self.assertIsNone(find_alphabet(input_dict), None)
+
+    def test_inconsistent_dict_return_constraints(self):
+        input_dict = ['ab', 'bb', 'ba']
+        self.assertIn(find_alphabet(input_dict, return_constraints=True),
+                      [{'ab'}, {'bb'}, {'ba'}])
 
     def test_alphabet(self):
         input_dict = [s for s in string.ascii_uppercase]
         self.assertEqual(input_dict, find_alphabet(input_dict))
+
+    def test_alphabet_return_constraints(self):
+        input_dict = [s for s in string.ascii_uppercase]
+        self.assertSetEqual(
+            find_alphabet(input_dict, return_constraints=True), set())
 
 
 if __name__ == '__main__':

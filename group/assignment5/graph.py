@@ -23,7 +23,8 @@ class Graph:
 
             # neighbour hasn't been visited yet
             if not visited[neighbour]:
-                self.dfs(neighbour, visited, order)
+                if not self.dfs(neighbour, visited, order):
+                    return False
 
             # cycle was found => no topological sort
             elif visited[neighbour] == 1:

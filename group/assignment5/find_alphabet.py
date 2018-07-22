@@ -1,8 +1,17 @@
 """
 -Find the alphabet on the given dictionary + identify inconsistent dictionaries
+ and return minimal set of constraints
 """
 from typing import List
+from itertools import combinations
 from assignment5.graph import *
+
+
+def word_is_consistent(word):
+    """
+    Checks if we need to remove word or not
+    """
+    return True
 
 
 def build_graph(dictionary):
@@ -21,16 +30,34 @@ def build_graph(dictionary):
     return graph
 
 
-def find_alphabet(dictionary: List[str]):
+def find_alphabet(dictionary: List[str], return_constraints=False):
     """
     Finds the alphabet by the given dictionary
     :param dictionary: List of words
-    :returns: List of characters or None if the given dictionary is inconsistent
+    :param return_constraints: if True then return
+            minimal set of constraint if dictionary
+            is inconsistent or empty set, if False - return alphabet or None
+            if dictionary is inconsistent
+    :returns: alphabet or minimal set of constraints
     """
-    graph = build_graph(dictionary)
-    if graph.vertices:
-        result = graph.topological_sort(list(graph.vertices)[0])
-        if result is None:
-            raise BaseException("The given dictionary is inconsistent")
-        return result
-    return []
+
+    # try to build alphabet from the input dictionary
+    # then if it is inconsistent try to remove every
+    # word and build the alphabet again then every 2 words etc
+    result = []
+    for i in range(len(dictionary)):
+        combinations_words = combinations(dictionary, i)
+        for words_to_remove in combinations_words:
+            new_dictionary = [word for word in dictionary
+                              if word not in words_to_remove
+                              and word_is_consistent(word)]
+            graph = build_graph(new_dictionary)
+            if graph.vertices:
+                result = graph.topological_sort(list(graph.vertices)[0])
+                if result is not None:
+                    if return_constraints:
+                        return set(words_to_remove)
+                if not return_constraints:
+                    return result
+
+    return result

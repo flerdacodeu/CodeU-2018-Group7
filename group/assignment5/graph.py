@@ -6,11 +6,13 @@ class Graph:
     def __init__(self):
         self.adjacency_list = defaultdict(list)
         self.vertices = set()
+        self.parents = defaultdict(list)
 
     def add_edge(self, u, v):
         self.adjacency_list[u].append(v)
         self.vertices.add(u)
         self.vertices.add(v)
+        self.parents[v].append(u)
 
     def dfs(self, v, visited, order):
         # visited - array of marks for every vertex

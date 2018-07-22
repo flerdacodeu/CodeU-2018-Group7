@@ -3,6 +3,7 @@ from collections import OrderedDict
 class Graph():
     def __init__(self):
         self.edges = dict()
+        self.parents = dict()
         self.vertices = set()
 
     def add_vertex(self, vertex):
@@ -10,11 +11,13 @@ class Graph():
             return
         self.vertices.add(vertex)
         self.edges[vertex] = list()
+        self.parents[vertex] = list()
 
     def add_edge(self, from_, to_):
         self.add_vertex(from_)
         self.add_vertex(to_)
         self.edges[from_].append(to_)
+        self.parents[to_].append(from_)
 
     def topological_sort(self):
         colors = dict.fromkeys(self.vertices, 'white')

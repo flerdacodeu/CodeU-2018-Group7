@@ -20,7 +20,7 @@ def build_graph(dictionary):
     adds an edge f -> s in a graph if letter f is lexicographically smaller than s
     """
     graph = Graph()
-    graph.vertices = {x for word in dictionary for x in word}
+    graph.vertices = {vertex for word in dictionary for vertex in word}
     for i in range(len(dictionary)-1):
         first_word = dictionary[i]
         second_word = dictionary[i+1]

@@ -17,7 +17,7 @@ class Graph:
     def dfs(self, v, visited, order):
         """
         Start from the v vertex and do dfs recursively,
-        when the all neighbours of bertex was visited - add it to the order list
+        add vertex to the order list when all its neighbours were visited
 
         :param v: the start vertex
         :param order: the order of letters in alphabet

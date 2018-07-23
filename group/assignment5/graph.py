@@ -53,4 +53,4 @@ class Graph:
             if not visited[v]:
                 if not self.dfs(v, visited, order):
                     return None
-        return list(order)
+        return ''.join(list(order))

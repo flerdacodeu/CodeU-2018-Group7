@@ -1,7 +1,8 @@
 import unittest
 import string
-from assignment5.find_alphabet import find_alphabet
+from assignment5.find_alphabet import find_alphabet, find_constraints, find_dictionary
 from assignment5.find_all_alphabets import find_all_alphabets
+
 
 class Test(unittest.TestCase):
     def test_example(self):
@@ -17,23 +18,29 @@ class Test(unittest.TestCase):
         input_dict = ['a']
         self.assertEqual(find_alphabet(input_dict), ['a'])
 
-    def test_inconsistent_dict_none(self):
+    def test_inconsistent_dict_constraints(self):
         input_dict = ['ab', 'bb', 'ba']
-        self.assertIsNone(find_alphabet(input_dict))
-
-    def test_inconsistent_dict_return_constraints(self):
-        input_dict = ['ab', 'bb', 'ba']
-        self.assertIn(find_alphabet(input_dict, return_constraints=True),
+        self.assertIn(find_constraints(input_dict),
                       [{'ab'}, {'bb'}, {'ba'}])
+
+    def test_inconsistent_maximal_consistent_dict(self):
+        input_dict = ['ab', 'bb', 'ba']
+        self.assertIn(find_dictionary(input_dict),
+                      [['ab', 'bb'], ['bb', 'ba'], ['ab', 'ba']])
 
     def test_alphabet(self):
         input_dict = [s for s in string.ascii_uppercase]
         self.assertEqual(input_dict, find_alphabet(input_dict))
 
-    def test_alphabet_return_constraints(self):
+    def test_alphabet_constraints(self):
         input_dict = [s for s in string.ascii_uppercase]
         self.assertSetEqual(
-            find_alphabet(input_dict, return_constraints=True), set())
+            find_constraints(input_dict), set())
+
+    def test_alphabet_maximal_consistent_dict(self):
+        input_dict = [s for s in string.ascii_uppercase]
+        self.assertEqual(
+            find_dictionary(input_dict), input_dict)
 
     def test_example_all(self):
         input_dict = ['ART', 'RAT', 'CAT', 'CAR']
@@ -46,7 +53,7 @@ class Test(unittest.TestCase):
     def test_two_components(self):
         input_dict = ['AB', 'BC', 'BD']
         self.assertEqual(find_all_alphabets(input_dict), {'ABCD', 'ACBD', 'ACDB', 'CDAB',
-            'CADB', 'CABD'})
+                                                          'CADB', 'CABD'})
 
     def test_all_alphabets(self):
         input_dict = [s for s in string.ascii_uppercase]

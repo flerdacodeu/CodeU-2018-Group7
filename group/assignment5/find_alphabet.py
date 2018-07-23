@@ -31,21 +31,19 @@ def build_graph(dictionary):
     return graph
 
 
-def find_alphabet(dictionary: List[str], return_constraints=False):
+def find_alphabet_dictionary_constraints(dictionary: List[str]):
     """
-    Finds the alphabet by the given dictionary
+    Finds the alphabet, consistent dictionary and
+     minimal set of constraints by the given dictionary
     :param dictionary: List of words
-    :param return_constraints: if True then return
-            minimal set of constraint if dictionary
-            is inconsistent or empty set, if False - return alphabet or None
-            if dictionary is inconsistent
-    :returns: alphabet or minimal set of constraints
+    :returns: (alphabet, consistent dictionary, minimal set of constraints)
     """
 
     # try to build alphabet from the input dictionary
     # then if it is inconsistent try to remove every
     # word and build the alphabet again then every 2 words etc
-    alphabet = []
+
+    alphabet, new_dictionary, words_to_remove = [], dictionary, set()
     for i in range(len(dictionary)):
         combinations_words = combinations(dictionary, i)
         for words_to_remove in combinations_words:
@@ -56,9 +54,26 @@ def find_alphabet(dictionary: List[str], return_constraints=False):
             if graph.vertices:
                 alphabet = graph.topological_sort(list(graph.vertices)[0])
                 if alphabet is not None:
-                    if return_constraints:
-                        return set(words_to_remove)
-                if not return_constraints:
-                    return alphabet
+                    return alphabet, new_dictionary, set(words_to_remove)
+    return alphabet, new_dictionary, words_to_remove
 
-    return alphabet
+
+def find_alphabet(dictionary: List[str]):
+    """
+    :returns: alphabet (which is built on the maximal consistent dictionary)
+    """
+    return find_alphabet_dictionary_constraints(dictionary)[0]
+
+
+def find_dictionary(dictionary: List[str]):
+    """
+    :returns: maximal subset of dictionary which is consistent
+    """
+    return find_alphabet_dictionary_constraints(dictionary)[1]
+
+
+def find_constraints(dictionary: List[str]):
+    """
+    :returns: minimal set of constraints
+    """
+    return find_alphabet_dictionary_constraints(dictionary)[2]

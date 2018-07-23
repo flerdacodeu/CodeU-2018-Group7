@@ -1,8 +1,17 @@
 """
 -Find the alphabet on the given dictionary + identify inconsistent dictionaries
+ and return minimal set of constraints
 """
 from typing import List
+from itertools import combinations
 from assignment5.graph import *
+
+
+def word_is_consistent(word):
+    """
+    Checks if we need to remove word or not
+    """
+    return True
 
 
 def build_graph(dictionary):
@@ -11,6 +20,7 @@ def build_graph(dictionary):
     adds an edge f -> s in a graph if letter f is lexicographically smaller than s
     """
     graph = Graph()
+    graph.vertices = {vertex for word in dictionary for vertex in word}
     for i in range(len(dictionary)-1):
         first_word = dictionary[i]
         second_word = dictionary[i+1]
@@ -21,16 +31,49 @@ def build_graph(dictionary):
     return graph
 
 
+def find_alphabet_dictionary_constraints(dictionary: List[str]):
+    """
+    Finds the alphabet, consistent dictionary and
+     minimal set of constraints by the given dictionary
+    :param dictionary: List of words
+    :returns: (alphabet, consistent dictionary, minimal set of constraints)
+    """
+
+    alphabet, new_dictionary, words_to_remove = [], dictionary, set()
+
+    # try to build alphabet from the input dictionary
+    # then if it is inconsistent try to remove every
+    # word and build the alphabet again then every 2 words etc
+    for i in range(len(dictionary)):
+        combinations_words = combinations(dictionary, i)
+        for words_to_remove in combinations_words:
+            new_dictionary = [word for word in dictionary
+                              if word not in words_to_remove
+                              and word_is_consistent(word)]
+            graph = build_graph(new_dictionary)
+            if graph.vertices:
+                alphabet = graph.topological_sort(list(graph.vertices)[0])
+                if alphabet is not None:
+                    return alphabet, new_dictionary, set(words_to_remove)
+    return alphabet, new_dictionary, words_to_remove
+
+
 def find_alphabet(dictionary: List[str]):
     """
-    Finds the alphabet by the given dictionary
-    :param dictionary: List of words
-    :returns: List of characters or None if the given dictionary is inconsistent
+    :returns: alphabet (which is built on the maximal consistent dictionary)
     """
-    graph = build_graph(dictionary)
-    if graph.vertices:
-        result = graph.topological_sort(list(graph.vertices)[0])
-        if result is None:
-            raise BaseException("The given dictionary is inconsistent")
-        return result
-    return []
+    return find_alphabet_dictionary_constraints(dictionary)[0]
+
+
+def find_dictionary(dictionary: List[str]):
+    """
+    :returns: maximal subset of dictionary which is consistent
+    """
+    return find_alphabet_dictionary_constraints(dictionary)[1]
+
+
+def find_constraints(dictionary: List[str]):
+    """
+    :returns: minimal set of constraints
+    """
+    return find_alphabet_dictionary_constraints(dictionary)[2]

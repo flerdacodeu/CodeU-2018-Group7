@@ -8,7 +8,7 @@ class Test(unittest.TestCase):
     def test_example(self):
         # test finding an alphabet for a simple example
         input_dict = ['ART', 'RAT', 'CAT', 'CAR']
-        self.assertIn(find_alphabet(input_dict), {'ATRC' 'TARC'})
+        self.assertIn(find_alphabet(input_dict), {'ATRC', 'TARC'})
 
     def test_empty_dict(self):
         # finding an alphabet for an empty dictionary

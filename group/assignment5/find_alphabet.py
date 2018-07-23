@@ -39,11 +39,11 @@ def find_alphabet_dictionary_constraints(dictionary: List[str]):
     :returns: (alphabet, consistent dictionary, minimal set of constraints)
     """
 
+    alphabet, new_dictionary, words_to_remove = [], dictionary, set()
+    
     # try to build alphabet from the input dictionary
     # then if it is inconsistent try to remove every
     # word and build the alphabet again then every 2 words etc
-
-    alphabet, new_dictionary, words_to_remove = [], dictionary, set()
     for i in range(len(dictionary)):
         combinations_words = combinations(dictionary, i)
         for words_to_remove in combinations_words:

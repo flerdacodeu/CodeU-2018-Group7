@@ -50,11 +50,11 @@ def build_graph(num_places, constraints=[]):
     graph.states_to_nums = {tuple(state): num for num, state in graph.nums_to_states.items()}
     graph.vertices = graph.nums_to_states.keys()
     for num in graph.vertices:
-        v = graph.nums_to_states[num]
-        empty = find_empty(v)
+        state = graph.nums_to_states[num]
+        empty = find_empty(state)
         for i in range(num_places):
             if i != empty:
-                new_state = v.copy()
+                new_state = state.copy()
                 new_state[empty], new_state[i] = new_state[i], new_state[empty]
                 graph.edges[num].append(graph.states_to_nums[tuple(new_state)])
     return graph

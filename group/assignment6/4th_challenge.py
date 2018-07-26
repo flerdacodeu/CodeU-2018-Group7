@@ -23,8 +23,8 @@ class Graph:
             all_paths = []
         visited[start] = True
         path.append(start)
-
-        if start == end:
+        
+        if start == end and len(path) != 1:
             all_paths.append([self.nums_to_states[x] for x in path])
         else:
             for i in self.edges[start]:
@@ -60,8 +60,8 @@ def build_graph(num_places, constraints=[]):
     return graph
 
 if __name__ == '__main__':
-    start_state = (2, 1, 0)
-    end_state = (0, 1, 2)
+    start_state = (0, 1, 2)
+    end_state = (2, 1, 0)
     g = build_graph(3)
     for path in g.print_all_paths(g.states_to_nums[start_state],\
                                   g.states_to_nums[end_state]):

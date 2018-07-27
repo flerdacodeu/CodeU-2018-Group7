@@ -1,7 +1,13 @@
 from Q1 import Node, BinaryTree, create_tree
 
-
 def find_lca(cur_node, node1, node2):
+    result = find_lca_(cur_node, node1, node2)
+    if not isinstance(result, int):
+        raise KeyError('At least one of the given values is not found in the tree')
+    return result
+
+
+def find_lca_(cur_node, node1, node2):
     # This algorithm is designed as follows: I start with the root and 
     # try to check whether one node is present in the left subtree and other node
     # is present in the right subtree. If this is the case, then the current node
@@ -16,12 +22,12 @@ def find_lca(cur_node, node1, node2):
         #print(cur_node.value, cur_node.left.value, cur_node.right.value)
         return cur_node
     try:
-        left_subtree = find_lca(cur_node.left, node1, node2)
+        left_subtree = find_lca_(cur_node.left, node1, node2)
     except KeyError:
         left_subtree = None
         #return None
     try:
-        right_subtree = find_lca(cur_node.right, node1, node2)
+        right_subtree = find_lca_(cur_node.right, node1, node2)
     except KeyError:
         right_subtree = None
         #return None
@@ -39,4 +45,4 @@ if __name__ == '__main__':
     tree = BinaryTree()
     tree.root = create_tree(data)
     #tree.print_tree(tree.root)
-    print(find_lca(tree.root, 5, 6))
+    print(find_lca(tree.root, 12, 11))

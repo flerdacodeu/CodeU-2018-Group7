@@ -1,5 +1,6 @@
 from collections import defaultdict
 from itertools import permutations
+import sys
 
 
 class Graph:
@@ -14,17 +15,23 @@ class Graph:
         self.nums_to_states = dict()
         self.states_to_nums = dict()
 
+    def add_edge(self, u, v):
+        self.edges[u].append(v)
+        self.vertices.add(u)
+        self.vertices.add(v)
+
     def print_all_paths(self, start, end, visited=None, path=None, all_paths=None):
         if visited is None:
-            visited = dict.fromkeys(self.vertices, False)
+            visited = [False]*(len(self.vertices))
         if path is None:
             path = []
         if all_paths is None:
             all_paths = []
+
         visited[start] = True
         path.append(start)
-        
-        if start == end and len(path) != 1:
+
+        if start == end:
             all_paths.append([self.nums_to_states[x] for x in path])
         else:
             for i in self.edges[start]:
@@ -32,7 +39,7 @@ class Graph:
                     self.print_all_paths(i, end, visited, path, all_paths)
 
         path.pop()
-        visited[end] = False
+        visited[start] = False
         return all_paths
 
 
@@ -57,12 +64,13 @@ def build_graph(num_places, constraints=[]):
                 new_state = state.copy()
                 new_state[empty], new_state[i] = new_state[i], new_state[empty]
                 graph.edges[num].append(graph.states_to_nums[tuple(new_state)])
+
     return graph
 
 if __name__ == '__main__':
-    start_state = (0, 1, 2)
-    end_state = (2, 1, 0)
-    g = build_graph(3)
+    start_state = (0, 1, 2,3)
+    end_state = (2, 1, 0,3)
+    g = build_graph(4)
     for path in g.print_all_paths(g.states_to_nums[start_state],\
                                   g.states_to_nums[end_state]):
         print(path)

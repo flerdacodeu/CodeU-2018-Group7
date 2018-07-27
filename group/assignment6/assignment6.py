@@ -91,7 +91,8 @@ def compute_efficient_moves(start_state, end_state):
     to the empty lot and repeat the procedure. 
     If empty slot is empty in the end state too, we take the leftmost lot
     with the misplaced car and move the car from that lot to the empty one. 
-    Then we perform the initial steps.
+    Then we perform the initial steps. When all the cars are on their places
+    (misplaced_car == len(current_state)), algorithm is finished.
 
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement

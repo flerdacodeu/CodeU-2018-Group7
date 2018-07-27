@@ -9,10 +9,11 @@ Car #1 is in the lot #0, car #2 is in the lot #1, etc.
 """
 
 
-def move_to_lot(current_state, move_from, move_to):
+def move_to_empty_lot(current_state, inverted_state, move_from, move_to):
     """
     Move a car from one slot to another. As we are always moving a car to
-    an empty slot, the function basically swaps an empty and occupied slots.
+    an empty slot, the function basically swaps an empty and occupied slots
+    in the current state and corresponding lots in the inverted state
 
     :param current_state: order of cars in the present moment
     :param move_from: int, number of a lot from which the car is moved
@@ -21,21 +22,30 @@ def move_to_lot(current_state, move_from, move_to):
     """
     current_state[move_from], current_state[move_to] = current_state[move_to], \
                                                        current_state[move_from]
-    return current_state
+    inverted_state[current_state[move_from]], inverted_state[current_state[move_to]] =\
+    inverted_state[current_state[move_to]], inverted_state[current_state[move_from]]
+    return current_state, inverted_state
 
 
-def find_empty(current_state):
+def compute_inverted_state(state):
+    inverted_state = list(range(len(state)))
+    for lot, car in enumerate(state):
+        inverted_state[car] = lot
+    return inverted_state
+
+
+def find_empty(inverted_state):
     """
     :returns: int, number of a currently empty lot
     """
-    return current_state.index(0)
+    return inverted_state[0]
 
 
-def find_car_lot(current_state, car):
+def find_car_lot(inverted_state, car):
     """
     :returns: int, number of a lot in which a given car is currently placed
     """
-    return current_state.index(car)
+    return inverted_state[car]
 
 
 def compute_moves(start_state, end_state):
@@ -55,25 +65,33 @@ def compute_moves(start_state, end_state):
     if len(start_state) != len(end_state):
         raise IndexError('The start state and end state have different lengths.')
     current_state = start_state.copy()
+    inverted_state = compute_inverted_state(current_state)
     for lot in range(len(current_state)):
         right_car = end_state[lot]
-        current_right_car = find_car_lot(current_state, right_car)
+        current_lot_right_car = find_car_lot(inverted_state, right_car)
         if not current_state[lot] == 0:
-            empty = find_empty(current_state)
-            current_state = move_to_lot(current_state, lot, empty)
+            empty = find_empty(inverted_state)
+            current_state, inverted_state = move_to_empty_lot(current_state, 
+                                                              inverted_state, 
+                                                              lot, empty)
             yield (lot, empty)
-        current_state = move_to_lot(current_state, current_right_car, lot)
-        yield (current_right_car, lot)
+        current_state, inverted_state = move_to_empty_lot(current_state, 
+                                                          inverted_state, 
+                                                          current_lot_right_car, lot)
+        yield (current_lot_right_car, lot)
         if current_state == end_state:
             break
 
 
 def compute_efficient_moves(start_state, end_state):
     """
-    More efficiently omputes a sequence of moves that are required to rearrange cars
-    from the given start state to the end state.
-    We look up which lot is empty and which car should be in this slot.
-    Then we move the required car to the empty lot and repeat the procedure.
+    More efficiently computes a sequence of moves that are required to rearrange 
+    carsfrom the given start state to the end state. We look up which lot is 
+    empty and which car should be in this slot. Then we move the required car
+    to the empty lot and repeat the procedure. 
+    If empty slot is empty in the end state too, we take the leftmost lot
+    with the misplaced car and move the car from that lot to the empty one. 
+    Then we perform the initial steps.
 
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement
@@ -84,12 +102,32 @@ def compute_efficient_moves(start_state, end_state):
     if len(start_state) != len(end_state):
         raise IndexError('The start state and end state have different lengths.')
     current_state = start_state.copy()
-    while current_state != end_state:
-        empty = find_empty(current_state)
-        right_car = end_state[empty]
-        current_right_car = find_car_lot(current_state, right_car)
-        current_state = move_to_lot(current_state, current_right_car, empty)
-        yield (current_right_car, empty)
+    inverted_state = compute_inverted_state(current_state)
+    inverted_end_state = compute_inverted_state(end_state)
+    empty_end_state = find_empty(inverted_end_state)
+    misplaced_car = 0
+    parking_size = len(current_state)
+    
+    while misplaced_car < parking_size:
+        empty = find_empty(inverted_state)
+        while empty != empty_end_state:
+            right_car = end_state[empty]
+            lot_right_car = find_car_lot(inverted_state, right_car)
+            current_state, inverted_state = move_to_empty_lot(current_state, 
+                                                              inverted_state,
+                                                              lot_right_car, empty)
+            yield (lot_right_car, empty)
+            empty = find_empty(inverted_state)
+        
+        while (misplaced_car < parking_size and end_state[misplaced_car] ==
+               current_state[misplaced_car]):
+            misplaced_car += 1
+        
+        if misplaced_car < parking_size:
+            current_state, inverted_state = move_to_empty_lot(current_state, 
+                                                              inverted_state,
+                                                              misplaced_car, empty)
+            yield (misplaced_car, empty)
 
 
 def apply_moves(start_state, moves):
@@ -105,14 +143,17 @@ def apply_moves(start_state, moves):
     :returns: end state, list of car numbers.
     """
     current_state = start_state.copy()
+    inverted_state = compute_inverted_state(current_state)
     for move in moves:
         move_from, move_to = move
-        current_state = move_to_lot(current_state, move_from, move_to)
+        current_state, inverted_state = move_to_empty_lot(current_state, inverted_state, 
+                                          move_from, move_to)
     return current_state
 
 
 if __name__ == '__main__':
-    start_state = [1, 2, 0, 3]
+    start_state = [1, 2, 0, 3] 
     end_state = [3, 1, 2, 0]
-    moves = compute_efficient_moves(start_state, end_state)
+    moves = list(compute_efficient_moves(start_state, end_state))
+    print(moves)
     print(apply_moves(start_state, moves))

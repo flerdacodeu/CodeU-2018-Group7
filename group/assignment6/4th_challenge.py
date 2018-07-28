@@ -88,6 +88,7 @@ def build_graph(num_places, constraints={}):
 if __name__ == '__main__':
     start_state = (1, 2, 0, 3)
     end_state = (3, 1, 2, 0)
+    # {parking_lot: (permitted cars)} 
     constraints = {0: (0, 1, 2, 3), 1: (0, 1, 2), 2: (0, 1, 3), 3: (0, 1, 2, 3)}
     g = build_graph(4, constraints)
     my_paths = g.find_all_paths(g.states_to_nums[start_state], g.states_to_nums[end_state])

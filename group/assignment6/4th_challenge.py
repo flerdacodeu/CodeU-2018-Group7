@@ -45,6 +45,17 @@ def find_empty(current_state):
     return current_state.index(0)
 
 
+def check_state(start_state, end_state, constraints):
+    for place_num in range(len(start_state)):
+        if start_state[place_num] not in constraints[place_num]:
+            raise(BaseException, "Start state doesn't satisfy constraints")
+            return False
+        if end_state[place_num] not in constraints[place_num]:
+            raise(BaseException, "End state doesn't satisfy constraints")
+            return False
+    return True
+
+
 def build_graph(num_places, constraints={}):
     graph = Graph()
     all_permutations = permutations(range(num_places))
@@ -67,10 +78,12 @@ def build_graph(num_places, constraints={}):
 
 if __name__ == '__main__':
     start_state = (1, 2, 0, 3)
+    #end_state = (2, 1, 3, 0)
     end_state = (3, 1, 2, 0)
     # {parking_lot: (permitted cars)} 
     constraints = {0: (0, 1, 2, 3), 1: (0, 1, 2), 2: (0, 1, 3), 3: (0, 1, 2, 3)}
     g = build_graph(4, constraints)
-    my_paths = g.find_all_paths(g.states_to_nums[start_state], g.states_to_nums[end_state])
-    decoded_paths = [g.decode_path(path) for path in my_paths]
-    print(decoded_paths)
+    if check_state(start_state, end_state, constraints):
+        my_paths = g.find_all_paths(g.states_to_nums[start_state], g.states_to_nums[end_state])
+        decoded_paths = [g.decode_path(path) for path in my_paths]
+        print(decoded_paths)

@@ -51,16 +51,12 @@ def rearrange_cars_naive(start_state, end_state):
     for lot, car in enumerate(start_state):
         inverted_state[car] = lot
     for lot, car in enumerate(current_state):
-        # print(current_state)
         if car == end_state[lot] or end_state[lot] == 0:
             continue
         new_car = end_state[lot]
-        # TODO: NamedTuple for move: (Car, From, To)
         moves_sequence.append((car, lot, empty_lot))
         moves_sequence.append((new_car, inverted_state[new_car], lot))
         empty_lot = place_car_to_lot(new_car, lot, current_state, inverted_state, empty_lot)
-    # print(current_state)
-    # print(moves_sequence)
     return moves_sequence
 
 
@@ -77,6 +73,7 @@ def rearrange_cars(start_state, end_state):
         moves_sequence: an optimal sequence of moves
     """
     empty_lot = start_state.index(0)
+    end_empty_lot = end_state.index(0)
     current_state = start_state.copy()
     inverted_state = [0 for i in range(len(start_state))]
     moves_sequence = list()
@@ -86,7 +83,7 @@ def rearrange_cars(start_state, end_state):
     parking_size = len(start_state)
 
     while leftest_misplaced_car < parking_size:
-        while empty_lot != end_state.index(0):
+        while empty_lot != end_empty_lot:
             new_car = end_state[empty_lot]
             moves_sequence.append((new_car, inverted_state[new_car], empty_lot))
             empty_lot = move_car_to_empty(new_car, current_state, inverted_state, empty_lot)

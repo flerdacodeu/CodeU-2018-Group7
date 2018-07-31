@@ -63,9 +63,9 @@ class TestEfficientFunction(unittest.TestCase):
 
     def test_random_permutation(self):
         random.seed(31)
-        start_state = list(range(100))
+        start_state = list(range(100000))
         random.shuffle(start_state)
-        end_state = list(range(100))
+        end_state = list(range(100000))
         random.shuffle(end_state)
         moves = compute_efficient_moves(start_state, end_state)
         self.assertEqual(apply_moves(start_state, moves), end_state)

@@ -67,9 +67,11 @@ def compute_moves(start_state, end_state):
     current_state = start_state.copy()
     inverted_state = compute_inverted_state(current_state)
     for lot in range(len(current_state)):
-        right_car = end_state[lot]
-        current_lot_right_car = find_car_lot(inverted_state, right_car)
-        if not current_state[lot] == 0:
+        end_car = end_state[lot]
+        if current_state[lot] == end_car or end_car == 0:
+            continue
+        current_lot_end_car = find_car_lot(inverted_state, end_car)
+        if current_state[lot] != 0:
             empty = find_empty(inverted_state)
             current_state, inverted_state = move_to_empty_lot(current_state, 
                                                               inverted_state, 
@@ -77,10 +79,8 @@ def compute_moves(start_state, end_state):
             yield (lot, empty)
         current_state, inverted_state = move_to_empty_lot(current_state, 
                                                           inverted_state, 
-                                                          current_lot_right_car, lot)
-        yield (current_lot_right_car, lot)
-        if current_state == end_state:
-            break
+                                                          current_lot_end_car, lot)
+        yield (current_lot_end_car, lot)
 
 
 def compute_efficient_moves(start_state, end_state):
@@ -112,12 +112,12 @@ def compute_efficient_moves(start_state, end_state):
     while misplaced_car < parking_size:
         empty = find_empty(inverted_state)
         while empty != empty_end_state:
-            right_car = end_state[empty]
-            lot_right_car = find_car_lot(inverted_state, right_car)
+            end_car = end_state[empty]
+            lot_end_car = find_car_lot(inverted_state, end_car)
             current_state, inverted_state = move_to_empty_lot(current_state, 
                                                               inverted_state,
-                                                              lot_right_car, empty)
-            yield (lot_right_car, empty)
+                                                              lot_end_car, empty)
+            yield (lot_end_car, empty)
             empty = find_empty(inverted_state)
         
         while (misplaced_car < parking_size and end_state[misplaced_car] ==

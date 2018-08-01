@@ -57,43 +57,31 @@ def compute_efficient_moves(start_state, end_state):
     """
     if len(start_state) != len(end_state):
         raise IndexError('The start state and end state have different lengths.')
-    current_state = start_state.copy()
-    inverted_state = compute_inverted_state(current_state)
-    inverted_end_state = compute_inverted_state(end_state)
-    empty_end_state = find_empty(inverted_end_state)
-    misplaced_car = 0
-    parking_size = len(current_state)
+    parking = Parking(start_state.copy())
+    misplaced_car_lot = 0
     
-    while misplaced_car < parking_size:
-        empty = find_empty(inverted_state)
-        while empty != empty_end_state:
-            end_car = end_state[empty]
-            lot_end_car = find_car_lot(inverted_state, end_car)
-            current_state, inverted_state = move_to_empty_lot(current_state, 
-                                                              inverted_state,
-                                                              lot_end_car, empty)
-            yield (lot_end_car, empty)
-            empty = find_empty(inverted_state)
+    while misplaced_car_lot < len(parking):
+        empty_lot = parking.find_empty_lot()
+        while end_state[empty_lot] != 0:
+            end_car = end_state[empty_lot]
+            yield parking.move_to_empty_lot(end_car)
+            empty_lot = parking.find_empty_lot()
         
-        while (misplaced_car < parking_size and end_state[misplaced_car] ==
-               current_state[misplaced_car]):
-            misplaced_car += 1
+        while (misplaced_car_lot < len(parking) and end_state[misplaced_car_lot] ==
+               parking.get_car(misplaced_car_lot)):
+            misplaced_car_lot += 1
         
-        if misplaced_car < parking_size:
-            current_state, inverted_state = move_to_empty_lot(current_state, 
-                                                              inverted_state,
-                                                              misplaced_car, empty)
-            yield (misplaced_car, empty)
+        if misplaced_car_lot < len(parking):
+            yield parking.move_to_empty_lot(parking.get_car(misplaced_car_lot))
 
 
 def apply_moves(start_state, moves):
     """
-    Function for checking the correctness of our results. We take
-    the start state and apply the move steps.
+    Applies the sequence of moves to a given state.
 
     :param start_state: order of cars in the start of the rearrangement
     :param moves: generator, sequence of moves that we need to apply.
-                  Each move is represented as a tuple with two indeces,
+                  Each move is represented as a tuple with two indices,
                   the 1st index is the number of lot from which we move the car,
                   the 2nd index is the number of lot to which we move the car
     :returns: end state, list of car numbers.

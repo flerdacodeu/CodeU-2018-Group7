@@ -111,7 +111,7 @@ if __name__ == '__main__':
     end_state = (2, 1, 3, 0)
     #end_state = (3, 1, 2, 0)
 
-    parking = Parking(constraints = {0: (0, 1, 2, 3), 1: (0, 1, 2), 2: (0, 1, 3), 3: (0, 1, 2, 3)})
+    parking = Parking(constraints={0: (0, 1, 2, 3), 1: (0, 1, 2), 2: (0, 1, 3), 3: (0, 1, 2, 3)})
     parking.start_state = start_state
     parking.end_state = end_state
     parking.build_graph(4)

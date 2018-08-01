@@ -48,10 +48,10 @@ def find_empty(current_state):
 def check_state(start_state, end_state, constraints):
     for place_num in range(len(start_state)):
         if start_state[place_num] not in constraints[place_num]:
-            raise(BaseException, "Start state doesn't satisfy constraints")
+            raise ValueError("Start state doesn't satisfy constraints")
             return False
         if end_state[place_num] not in constraints[place_num]:
-            raise(BaseException, "End state doesn't satisfy constraints")
+            raise ValueError("End state doesn't satisfy constraints")
             return False
     return True
 

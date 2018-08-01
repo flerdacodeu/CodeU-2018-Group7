@@ -3,17 +3,62 @@ from itertools import permutations
 import sys
 
 
-class Graph:
+class Parking:
     """
     Args:
         nums_to_states: {num_of_state: state}
         states_to_nums: {state: num_of_state}
+        constraints: {parking_lot: (permitted cars)}
     """
+    def __init__(self):
+        self.nums_to_states = dict()
+        self.states_to_nums = dict()
+        self.constraints = set()
+
+    def decode_path(self, path):
+        return [self.nums_to_states[x] for x in path]
+
+    def find_empty(current_state):
+        """
+        :returns: int, number of a currently empty lot
+        """
+        return current_state.index(0)
+
+    def check_state(start_state, end_state, constraints):
+        for place_num in range(len(start_state)):
+            if start_state[place_num] not in constraints[place_num]:
+                raise ValueError("Start state doesn't satisfy constraints")
+                return False
+            if end_state[place_num] not in constraints[place_num]:
+                raise ValueError("End state doesn't satisfy constraints")
+                return False
+        return True
+
+    def build_graph(self, num_places):
+        graph = Graph()
+        all_permutations = permutations(range(num_places))
+        graph.nums_to_states = dict(enumerate(map(list, all_permutations)))
+        graph.states_to_nums = {tuple(state): num for num, state in graph.nums_to_states.items()}
+        graph.vertices = graph.nums_to_states.keys()
+        for num in graph.vertices:
+            state = graph.nums_to_states[num]
+            empty = self.find_empty(state)
+            for i in range(num_places):
+                if i != empty:
+                    new_state = state.copy()
+                    if len(self.constraints) > 0:
+                        if new_state[i] not in self.constraints[i]:
+                            continue
+                    new_state[empty], new_state[i] = new_state[i], new_state[empty]
+                    graph.edges[num].append(graph.states_to_nums[tuple(new_state)])
+
+        return graph
+
+class Graph:
+
     def __init__(self):
         self.vertices = set()
         self.edges = defaultdict(list)
-        self.nums_to_states = dict()
-        self.states_to_nums = dict()
 
     def add_edge(self, u, v):
         self.edges[u].append(v)
@@ -33,57 +78,17 @@ class Graph:
                 for new_path in new_paths:
                     paths.append(new_path)
         return paths
-    
-    def decode_path(self, path):
-        return [self.nums_to_states[x] for x in path]
 
-
-def find_empty(current_state):
-    """
-    :returns: int, number of a currently empty lot
-    """
-    return current_state.index(0)
-
-
-def check_state(start_state, end_state, constraints):
-    for place_num in range(len(start_state)):
-        if start_state[place_num] not in constraints[place_num]:
-            raise ValueError("Start state doesn't satisfy constraints")
-            return False
-        if end_state[place_num] not in constraints[place_num]:
-            raise ValueError("End state doesn't satisfy constraints")
-            return False
-    return True
-
-
-def build_graph(num_places, constraints={}):
-    graph = Graph()
-    all_permutations = permutations(range(num_places))
-    graph.nums_to_states = dict(enumerate(map(list, all_permutations)))
-    graph.states_to_nums = {tuple(state): num for num, state in graph.nums_to_states.items()}
-    graph.vertices = graph.nums_to_states.keys()
-    for num in graph.vertices:
-        state = graph.nums_to_states[num]
-        empty = find_empty(state)
-        for i in range(num_places):
-            if i != empty:
-                new_state = state.copy()
-                if len(constraints) > 0:
-                    if new_state[i] not in constraints[i]:
-                        continue
-                new_state[empty], new_state[i] = new_state[i], new_state[empty]
-                graph.edges[num].append(graph.states_to_nums[tuple(new_state)])
-
-    return graph
 
 if __name__ == '__main__':
     start_state = (1, 2, 0, 3)
     #end_state = (2, 1, 3, 0)
     end_state = (3, 1, 2, 0)
-    # {parking_lot: (permitted cars)} 
-    constraints = {0: (0, 1, 2, 3), 1: (0, 1, 2), 2: (0, 1, 3), 3: (0, 1, 2, 3)}
-    g = build_graph(4, constraints)
-    if check_state(start_state, end_state, constraints):
-        my_paths = g.find_all_paths(g.states_to_nums[start_state], g.states_to_nums[end_state])
-        decoded_paths = [g.decode_path(path) for path in my_paths]
+    parking = Parking()
+    parking.constraints = {0: (0, 1, 2, 3), 1: (0, 1, 2), 2: (0, 1, 3), 3: (0, 1, 2, 3)}
+    g = parking.build_graph(4)
+    if parking.check_state(start_state, end_state):
+        my_paths = g.find_all_paths(parking.states_to_nums[start_state],
+                                    parking.states_to_nums[end_state])
+        decoded_paths = [parking.decode_path(path) for path in my_paths]
         print(decoded_paths)

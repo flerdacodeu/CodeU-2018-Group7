@@ -8,44 +8,7 @@ number in the list. For example, [1, 2, 0, 3] is the start state.
 Car #1 is in the lot #0, car #2 is in the lot #1, etc.
 """
 
-
-def move_to_empty_lot(current_state, inverted_state, move_from, move_to):
-    """
-    Move a car from one slot to another. As we are always moving a car to
-    an empty slot, the function basically swaps an empty and occupied slots
-    in the current state and corresponding lots in the inverted state
-
-    :param current_state: order of cars in the present moment
-    :param move_from: int, number of a lot from which the car is moved
-    :param move_to: int, number of an empty slot to which we move the car
-    :returns: modified current state
-    """
-    current_state[move_from], current_state[move_to] = current_state[move_to], \
-                                                       current_state[move_from]
-    inverted_state[current_state[move_from]], inverted_state[current_state[move_to]] =\
-    inverted_state[current_state[move_to]], inverted_state[current_state[move_from]]
-    return current_state, inverted_state
-
-
-def compute_inverted_state(state):
-    inverted_state = list(range(len(state)))
-    for lot, car in enumerate(state):
-        inverted_state[car] = lot
-    return inverted_state
-
-
-def find_empty(inverted_state):
-    """
-    :returns: int, number of a currently empty lot
-    """
-    return inverted_state[0]
-
-
-def find_car_lot(inverted_state, car):
-    """
-    :returns: int, number of a lot in which a given car is currently placed
-    """
-    return inverted_state[car]
+from parking_class import Parking
 
 
 def compute_moves(start_state, end_state):
@@ -64,23 +27,15 @@ def compute_moves(start_state, end_state):
     """
     if len(start_state) != len(end_state):
         raise IndexError('The start state and end state have different lengths.')
-    current_state = start_state.copy()
-    inverted_state = compute_inverted_state(current_state)
-    for lot in range(len(current_state)):
+
+    parking = Parking(start_state.copy())
+    for lot in range(len(parking)):
         end_car = end_state[lot]
-        if current_state[lot] == end_car or end_car == 0:
+        if parking.get_car(lot) == end_car or end_car == 0:
             continue
-        current_lot_end_car = find_car_lot(inverted_state, end_car)
-        if current_state[lot] != 0:
-            empty = find_empty(inverted_state)
-            current_state, inverted_state = move_to_empty_lot(current_state, 
-                                                              inverted_state, 
-                                                              lot, empty)
-            yield (lot, empty)
-        current_state, inverted_state = move_to_empty_lot(current_state, 
-                                                          inverted_state, 
-                                                          current_lot_end_car, lot)
-        yield (current_lot_end_car, lot)
+        if parking.get_car(lot) != 0:
+            yield parking.move_to_empty_lot(parking.get_car(lot))
+        yield parking.move_to_empty_lot(end_car)
 
 
 def compute_efficient_moves(start_state, end_state):
@@ -143,18 +98,17 @@ def apply_moves(start_state, moves):
                   the 2nd index is the number of lot to which we move the car
     :returns: end state, list of car numbers.
     """
-    current_state = start_state.copy()
-    inverted_state = compute_inverted_state(current_state)
+    parking = Parking(start_state.copy())
     for move in moves:
         move_from, move_to = move
-        current_state, inverted_state = move_to_empty_lot(current_state, inverted_state, 
-                                          move_from, move_to)
-    return current_state
+        assert parking.get_car(move_to) == 0, "Lot %d is not empty" % move_to
+        parking.move_to_empty_lot(parking.get_car(move_from))
+    return parking.get_state()
 
 
 if __name__ == '__main__':
     start_state = [1, 2, 0, 3] 
     end_state = [3, 1, 2, 0]
-    moves = list(compute_efficient_moves(start_state, end_state))
+    moves = list(compute_moves(start_state, end_state))
     print(moves)
     print(apply_moves(start_state, moves))

@@ -14,6 +14,7 @@ class Parking:
         self.nums_to_states = dict()
         self.states_to_nums = dict()
         self.constraints = set()
+        self.graph = Graph()
 
     def decode_path(self, path):
         return [self.nums_to_states[x] for x in path]
@@ -35,7 +36,7 @@ class Parking:
         return True
 
     def build_graph(self, num_places):
-        graph = Graph()
+        graph = self.graph
         all_permutations = permutations(range(num_places))
         self.nums_to_states = dict(enumerate(map(list, all_permutations)))
         self.states_to_nums = {tuple(state): num for num, state in self.nums_to_states.items()}
@@ -52,10 +53,13 @@ class Parking:
                     new_state[empty], new_state[i] = new_state[i], new_state[empty]
                     graph.edges[num].append(self.states_to_nums[tuple(new_state)])
 
-        return graph
+    def find_all_movements(self, start_state, end_state):
+        return self.graph.find_all_paths(self.states_to_nums[start_state],\
+                                         self.states_to_nums[end_state])
+
+
 
 class Graph:
-
     def __init__(self):
         self.vertices = set()
         self.edges = defaultdict(list)
@@ -82,13 +86,13 @@ class Graph:
 
 if __name__ == '__main__':
     start_state = (1, 2, 0, 3)
-    #end_state = (2, 1, 3, 0)
-    end_state = (3, 1, 2, 0)
+    end_state = (2, 1, 3, 0)
+    #end_state = (3, 1, 2, 0)
+
     parking = Parking()
     parking.constraints = {0: (0, 1, 2, 3), 1: (0, 1, 2), 2: (0, 1, 3), 3: (0, 1, 2, 3)}
-    g = parking.build_graph(4)
+    parking.build_graph(4)
     if parking.check_state(start_state, end_state):
-        my_paths = g.find_all_paths(parking.states_to_nums[start_state],\
-                                    parking.states_to_nums[end_state])
+        my_paths = parking.find_all_movements(start_state, end_state)
         decoded_paths = [parking.decode_path(path) for path in my_paths]
         print(decoded_paths)

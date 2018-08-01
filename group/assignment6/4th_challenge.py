@@ -3,20 +3,22 @@ from itertools import permutations
 import sys
 
 
-class Parking:
+class PathFinder:
     """
     Args:
         nums_to_states: {num_of_state: state}
         states_to_nums: {state: num_of_state}
         constraints: {parking_lot: (permitted cars)}
     """
-    def __init__(self, constraints):
+    def __init__(self, start_state, end_state, constraints):
+        assert len(start_state) == len(end_state), "Start and end states have different length"
         self.nums_to_states = dict()
         self.states_to_nums = dict()
         self._constraints = constraints
-        self._start_state = None
-        self._end_state = None
+        self.start_state = start_state
+        self.end_state = end_state
         self.graph = Graph()
+        self.build_graph(len(start_state))
 
     @property
     def start_state(self):
@@ -76,7 +78,7 @@ class Parking:
                     new_state[empty], new_state[i] = new_state[i], new_state[empty]
                     graph.edges[num].append(self.states_to_nums[tuple(new_state)])
 
-    def find_all_movements(self):
+    def find_all_paths(self):
         return self.graph.find_all_paths(self.states_to_nums[self.start_state],\
                                          self.states_to_nums[self.end_state])
 
@@ -111,10 +113,8 @@ if __name__ == '__main__':
     end_state = (2, 1, 3, 0)
     #end_state = (3, 1, 2, 0)
 
-    parking = Parking(constraints={0: (0, 1, 2, 3), 1: (0, 1, 2), 2: (0, 1, 3), 3: (0, 1, 2, 3)})
-    parking.start_state = start_state
-    parking.end_state = end_state
-    parking.build_graph(4)
-    my_paths = parking.find_all_movements()
-    decoded_paths = [parking.decode_path(path) for path in my_paths]
+    path_finder = PathFinder(start_state, end_state, constraints={0: (0, 1, 2, 3), 1: (0, 1, 2), 2: (0,
+        1, 3), 3: (0, 1, 2, 3)})
+    my_paths = path_finder.find_all_paths()
+    decoded_paths = [path_finder.decode_path(path) for path in my_paths]
     print(decoded_paths)

@@ -15,8 +15,8 @@ class PathFinder:
         self.nums_to_states = dict()
         self.states_to_nums = dict()
         self._constraints = constraints
-        self.start_state = start_state
-        self.end_state = end_state
+        self._start_state = start_state
+        self._end_state = end_state
         self.graph = Graph()
         self.build_graph(len(start_state))
 

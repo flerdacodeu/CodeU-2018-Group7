@@ -89,7 +89,6 @@ def apply_moves(start_state, moves):
     parking = Parking(start_state.copy())
     for move in moves:
         move_from, move_to = move
-        assert parking.get_car(move_to) == 0, "Lot %d is not empty" % move_to
         parking.move_to_empty_lot(parking.get_car(move_from))
     return parking.get_state()
 

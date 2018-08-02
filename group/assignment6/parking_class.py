@@ -40,15 +40,10 @@ class Parking:
 
         :param car: int, number of a car that is moving to an empty lot
         """
-        assert 0 < car < len(self), "Trying to move invalid car"
         move_from = self.get_lot(car)
         move_to = self.find_empty_lot()
-        # self._state[move_from], self._state[move_to] = self._state[move_to], \
-        #                                               self._state[move_from]
         self._state[move_from] = 0
         self._state[move_to] = car
-        # self._inverted_state[self._state[move_from]], self._inverted_state[self._state[move_to]] =\
-        #    self._inverted_state[self._state[move_to]], self._inverted_state[self._state[move_from]]
         self._inverted_state[0] = move_from
         self._inverted_state[car] = move_to
         return (move_from, move_to)

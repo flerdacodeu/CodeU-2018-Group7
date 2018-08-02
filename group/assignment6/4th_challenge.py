@@ -93,28 +93,37 @@ class Graph:
         self.vertices.add(u)
         self.vertices.add(v)
 
-    def find_all_paths(self, start, end, path=None):
-        if path is None:
-            path = []
-        path = path + [start]
-        if start == end:
-            return [path]
-        paths = []
-        for node in self.edges[start]:
-            if node not in path:
-                new_paths = self.find_all_paths(node, end, path)
-                for new_path in new_paths:
-                    paths.append(new_path)
-        return paths
-
+    def find_all_paths(self, start, end):
+        nodes = [start]
+        depths = [start]
+        path = []
+        while nodes:
+            node = nodes.pop()
+            level = depths.pop()
+            while (len(path) > 0) and (path[-1] != level):
+                path.pop()
+            path.append(node)
+            has_new = False
+            for neighbour in self.edges[node]:
+                if neighbour in path:
+                    continue
+                if end == neighbour:
+                    new_path = path.copy()
+                    new_path.append(end)
+                    yield new_path
+                    continue
+                else:
+                    has_new = True
+                    nodes.append(neighbour)
+                    depths.append(node)
+            if not has_new:
+                path.pop()
 
 if __name__ == '__main__':
-    start_state = (1, 2, 0, 3)
-    end_state = (2, 1, 3, 0)
-    #end_state = (3, 1, 2, 0)
-
-    path_finder = PathFinder(start_state, end_state, constraints={0: (0, 1, 2, 3), 1: (0, 1, 2), 2: (0,
-        1, 3), 3: (0, 1, 2, 3)})
-    my_paths = path_finder.find_all_paths()
+    start_state = (1, 2, 0, 3, 4, 5, 6, 7)
+    end_state = (2, 1, 3, 0, 4, 5, 6, 7)
+    num_sequences = 1
+    path_finder = PathFinder(start_state, end_state, constraints={i:tuple(range(8)) for i in range(8)})
+    my_paths = list(next(path_finder.find_all_paths()) for _ in range(num_sequences))
     decoded_paths = [path_finder.decode_path(path) for path in my_paths]
     print(decoded_paths)

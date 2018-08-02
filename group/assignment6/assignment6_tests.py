@@ -31,7 +31,7 @@ class TestInput(unittest.TestCase):
         start_state = []
         end_state = []
         moves = compute_efficient_moves(start_state, end_state)
-        self.assertRaises(IndexError, lambda: next(moves))
+        self.assertEqual(list(moves), list())
     
     def test_empty_state(self):
         # test if one of the states is empty
@@ -63,9 +63,10 @@ class TestEfficientFunction(unittest.TestCase):
 
     def test_random_permutation(self):
         random.seed(31)
-        start_state = list(range(100000))
+        parking_size = 100000
+        start_state = list(range(parking_size))
         random.shuffle(start_state)
-        end_state = list(range(100000))
+        end_state = list(range(parking_size))
         random.shuffle(end_state)
         moves = compute_efficient_moves(start_state, end_state)
         self.assertEqual(apply_moves(start_state, moves), end_state)

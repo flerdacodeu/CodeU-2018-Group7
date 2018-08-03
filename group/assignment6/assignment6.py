@@ -41,8 +41,8 @@ def compute_moves(start_state, end_state):
 def compute_efficient_moves(start_state, end_state):
     """
     More efficiently computes a sequence of moves that are required to rearrange 
-    carsfrom the given start state to the end state. We look up which lot is 
-    empty and which car should be in this slot. Then we move the required car
+    cars from the given start state to the end state. We look up which lot is 
+    empty and which car should be in this lot. Then we move the required car
     to the empty lot and repeat the procedure. 
     If empty slot is empty in the end state too, we take the leftmost lot
     with the misplaced car and move the car from that lot to the empty one. 

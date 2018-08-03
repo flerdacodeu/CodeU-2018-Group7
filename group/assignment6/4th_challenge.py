@@ -86,9 +86,18 @@ class PathFinder:
                     new_state[empty], new_state[i] = new_state[i], new_state[empty]
                     graph.edges[num].append(self.states_to_nums[tuple(new_state)])
 
-    def find_all_paths(self):
-        return self._graph.find_all_paths(self.states_to_nums[self.start_state],
+    def find_all_paths(self, num_sequences=None):
+        """
+
+        :param num_sequences: how many sequences users wants to see, if None function returns all
+        """
+        paths_generator = self._graph.find_all_paths(self.states_to_nums[self.start_state],
                                           self.states_to_nums[self.end_state])
+        if num_sequences is not None:
+            all_paths = list(next(paths_generator) for _ in range(num_sequences))
+        else:
+            all_paths = list(paths_generator)
+        return [self.decode_path(path) for path in all_paths]
 
 
 class Graph:
@@ -132,6 +141,5 @@ if __name__ == '__main__':
     end_state = (2, 1, 3, 0, 4, 5, 6, 7)
     num_sequences = 1
     path_finder = PathFinder(start_state, end_state)
-    my_paths = list(next(path_finder.find_all_paths()) for _ in range(num_sequences))
-    decoded_paths = [path_finder.decode_path(path) for path in my_paths]
+    decoded_paths = path_finder.find_all_paths(num_sequences=num_sequences)
     print(decoded_paths)

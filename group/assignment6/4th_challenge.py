@@ -34,7 +34,7 @@ class PathFinder:
     @start_state.setter
     def start_state(self, value):
         try:
-            self.check_state(value)
+            self._check_state(value)
             self._start_state = value
         except ValueError as e:
             print("Start state doesn't satisfy constraints")
@@ -47,13 +47,13 @@ class PathFinder:
     @end_state.setter
     def end_state(self, value):
         try:
-            self.check_state(value)
+            self._check_state(value)
             self._end_state = value
         except ValueError as e:
             print("End state doesn't satisfy constraints")
             raise e
 
-    def decode_path(self, path):
+    def _decode_path(self, path):
         return [self.nums_to_states[x] for x in path]
 
     @staticmethod
@@ -63,7 +63,7 @@ class PathFinder:
         """
         return current_state.index(0)
 
-    def check_state(self, state):
+    def _check_state(self, state):
         for place_num in range(len(state)):
             if state[place_num] not in self._constraints[place_num]:
                 raise ValueError
@@ -97,7 +97,7 @@ class PathFinder:
             all_paths = list(next(paths_generator) for _ in range(num_sequences))
         else:
             all_paths = list(paths_generator)
-        return [self.decode_path(path) for path in all_paths]
+        return [self._decode_path(path) for path in all_paths]
 
 
 class Graph:

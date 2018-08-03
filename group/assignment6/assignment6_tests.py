@@ -5,9 +5,9 @@ from path_finder import PathFinder
 
 class TestExample(unittest.TestCase):
     def setUp(self):
-        start_state = [1, 2, 0, 3]
-        end_state = [3, 1, 2, 0]
-        self.path_finder = PathFinder(start_state, end_state)
+        self.start_state = [1, 2, 0, 3]
+        self.end_state = [3, 1, 2, 0]
+        self.path_finder = PathFinder(self.start_state, self.end_state)
         
     def test_compute_moves(self):
         # test the simple function
@@ -23,10 +23,11 @@ class TestExample(unittest.TestCase):
         moves = self.path_finder.compute_efficient_moves()
         self.assertEqual(list(moves), [(1, 2), (0, 1), (3, 0)])
 
+
 class TestInput(unittest.TestCase):
-    # These test cases can be applied either to compute_moves() 
+    # These test cases can be applied either to compute_moves()
     # or to compute_efficient_moves()
-    
+
     def test_two_empty_states(self):
         # test if both states are empty
         start_state = []
@@ -34,7 +35,7 @@ class TestInput(unittest.TestCase):
         path_finder = PathFinder(start_state, end_state)
         moves = path_finder.compute_efficient_moves()
         self.assertEqual(list(moves), list())
-    
+
     def test_empty_state(self):
         # test if one of the states is empty
         start_state = [1, 2, 0, 3]
@@ -42,32 +43,32 @@ class TestInput(unittest.TestCase):
         path_finder = PathFinder(start_state, end_state)
         moves = compute_efficient_moves(start_state, end_state)
         self.assertRaises(IndexError, lambda: next(moves))
-    
+
     def test_apply_to_empty(self):
         # test applying the moves to the empty start state
         start_state = []
         moves = [(1, 2), (0, 1), (3, 0)]
         self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
-    
+
     def test_apply_empty_moves(self):
         # test applying an empty sequence of moves to the start state
         moves = []
         start_state = [1, 2, 0, 3]
         self.assertEqual(apply_moves(start_state, moves), start_state)
-        
+
     def test_nonexistent_indexes(self):
         # test trying to move cars with nonexistent indexes
         start_state = [1, 2, 0, 3]
         end_state = [123, 0, 143, 79]
         moves = compute_efficient_moves(start_state, end_state)
         self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
-        
+
     def test_same_car_index(self):
         # test having same car on multiple parking lots
         start_state = [2, 2, 2, 0]
         end_state = [2, 2, 2, 0]
         moves = compute_efficient_moves(start_state, end_state)
-        self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))        
+        self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
 
     def test_no_empty_lot(self):
         # test parking without empty parking lots
@@ -104,7 +105,6 @@ class TestEfficientFunction(unittest.TestCase):
         moves = list(path_finder.compute_efficient_moves())
         self.assertEqual(path_finder.apply_moves(moves), end_state)
         self.assertEqual(len(list(moves)), 9)
-
 
 if __name__ == '__main__':
     unittest.main()

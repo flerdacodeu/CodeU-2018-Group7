@@ -19,12 +19,13 @@ class PathFinder:
 
         if constraints is None:
             length = len(start_state)
-            constraints = {i: tuple(range(length)) for i in range(length)}
-        self._constraints = constraints
+            self._constraints = {i: tuple(range(length)) for i in range(length)}
+        else:
+            self._constraints = constraints
         self._start_state = start_state
         self._end_state = end_state
-        self.graph = Graph()
-        self.build_graph(len(start_state))
+        self._graph = Graph()
+        self._build_graph(len(start_state))
 
     @property
     def start_state(self):
@@ -67,8 +68,8 @@ class PathFinder:
             if state[place_num] not in self._constraints[place_num]:
                 raise ValueError
 
-    def build_graph(self, num_places):
-        graph = self.graph
+    def _build_graph(self, num_places):
+        graph = self._graph
         all_permutations = permutations(range(num_places))
         self.nums_to_states = dict(enumerate(map(list, all_permutations)))
         self.states_to_nums = {tuple(state): num for num, state in self.nums_to_states.items()}
@@ -86,8 +87,8 @@ class PathFinder:
                     graph.edges[num].append(self.states_to_nums[tuple(new_state)])
 
     def find_all_paths(self):
-        return self.graph.find_all_paths(self.states_to_nums[self.start_state],
-                                         self.states_to_nums[self.end_state])
+        return self._graph.find_all_paths(self.states_to_nums[self.start_state],
+                                          self.states_to_nums[self.end_state])
 
 
 class Graph:

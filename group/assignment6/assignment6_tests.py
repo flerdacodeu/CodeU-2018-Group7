@@ -8,11 +8,6 @@ class TestExample(unittest.TestCase):
         self.start_state = [1, 2, 0, 3]
         self.end_state = [3, 1, 2, 0]
         self.path_finder = PathFinder(self.start_state, self.end_state)
-        
-    def test_compute_moves(self):
-        # test the simple function
-        moves = self.path_finder.compute_moves()
-        self.assertEqual(self.path_finder.apply_moves(moves), self.end_state)
 
     def test_compute_efficient_moves(self):
         # test the efficient function, challenge #2

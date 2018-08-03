@@ -31,7 +31,7 @@ class PathFinder:
             self._constraints = {i: tuple(range(length)) for i in range(length)}
         else:
             if not constraints:
-                raise (ValueError, "constraints can't be an empty dictionary")
+                raise ValueError("Constraints can't be an empty dictionary")
             self._constraints = constraints
         self._start_state = start_state
         self._end_state = end_state

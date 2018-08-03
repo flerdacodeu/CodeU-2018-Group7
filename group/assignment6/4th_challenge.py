@@ -16,7 +16,8 @@ class PathFinder:
 
         if len(start_state) != len(end_state):
             raise (ValueError, "Start and end states should have the same length")
-
+        if not constraints:
+            raise(ValueError, "constraints can't be an empty dictionary")
         if constraints is None:
             length = len(start_state)
             self._constraints = {i: tuple(range(length)) for i in range(length)}
@@ -34,7 +35,7 @@ class PathFinder:
     @start_state.setter
     def start_state(self, value):
         try:
-            self._check_state(value)
+            self._check_state_vadility(value)
             self._start_state = value
         except ValueError as e:
             print("Start state doesn't satisfy constraints")
@@ -47,7 +48,7 @@ class PathFinder:
     @end_state.setter
     def end_state(self, value):
         try:
-            self._check_state(value)
+            self._check_state_vadility(value)
             self._end_state = value
         except ValueError as e:
             print("End state doesn't satisfy constraints")
@@ -63,7 +64,7 @@ class PathFinder:
         """
         return current_state.index(0)
 
-    def _check_state(self, state):
+    def _check_state_vadility(self, state):
         for place_num in range(len(state)):
             if state[place_num] not in self._constraints[place_num]:
                 raise ValueError

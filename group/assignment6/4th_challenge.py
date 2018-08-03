@@ -64,7 +64,7 @@ class PathFinder:
         """
         return current_state.index(0)
 
-    def _check_state_vadility(self, state):
+    def _check_state_validity(self, state):
         for place_num in range(len(state)):
             if state[place_num] not in self._constraints[place_num]:
                 raise ValueError

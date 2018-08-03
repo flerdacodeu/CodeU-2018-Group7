@@ -10,10 +10,16 @@ class PathFinder:
         states_to_nums: {state: num_of_state}
         constraints: {parking_lot: (permitted cars)}
     """
-    def __init__(self, start_state, end_state, constraints):
-        assert len(start_state) == len(end_state), "Start and end states have different length"
+    def __init__(self, start_state, end_state, constraints=None):
         self.nums_to_states = dict()
         self.states_to_nums = dict()
+
+        if len(start_state) != len(end_state):
+            raise (ValueError, "Start and end states should have the same length")
+
+        if constraints is None:
+            length = len(start_state)
+            constraints = {i: tuple(range(length)) for i in range(length)}
         self._constraints = constraints
         self._start_state = start_state
         self._end_state = end_state
@@ -49,7 +55,8 @@ class PathFinder:
     def decode_path(self, path):
         return [self.nums_to_states[x] for x in path]
 
-    def find_empty(self, current_state):
+    @staticmethod
+    def find_empty(current_state):
         """
         :returns: int, number of a currently empty lot
         """
@@ -79,7 +86,7 @@ class PathFinder:
                     graph.edges[num].append(self.states_to_nums[tuple(new_state)])
 
     def find_all_paths(self):
-        return self.graph.find_all_paths(self.states_to_nums[self.start_state],\
+        return self.graph.find_all_paths(self.states_to_nums[self.start_state],
                                          self.states_to_nums[self.end_state])
 
 
@@ -123,7 +130,7 @@ if __name__ == '__main__':
     start_state = (1, 2, 0, 3, 4, 5, 6, 7)
     end_state = (2, 1, 3, 0, 4, 5, 6, 7)
     num_sequences = 1
-    path_finder = PathFinder(start_state, end_state, constraints={i:tuple(range(8)) for i in range(8)})
+    path_finder = PathFinder(start_state, end_state)
     my_paths = list(next(path_finder.find_all_paths()) for _ in range(num_sequences))
     decoded_paths = [path_finder.decode_path(path) for path in my_paths]
     print(decoded_paths)

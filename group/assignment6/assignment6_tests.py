@@ -1,25 +1,26 @@
 import unittest
 import random
-from assignment6 import compute_moves, compute_efficient_moves, apply_moves
+from path_finder import PathFinder
 
 
 class TestExample(unittest.TestCase):
     def setUp(self):
-        self.start_state = [1, 2, 0, 3]
-        self.end_state = [3, 1, 2, 0]
+        start_state = [1, 2, 0, 3]
+        end_state = [3, 1, 2, 0]
+        self.path_finder = PathFinder(start_state, end_state)
         
     def test_compute_moves(self):
         # test the simple function
-        moves = compute_moves(self.start_state, self.end_state)
-        self.assertEqual(apply_moves(self.start_state, moves), self.end_state)
+        moves = self.path_finder.compute_moves()
+        self.assertEqual(self.path_finder.apply_moves(moves), self.end_state)
 
     def test_compute_efficient_moves(self):
         # test the efficient function, challenge #2
-        moves = compute_efficient_moves(self.start_state, self.end_state)
-        self.assertEqual(apply_moves(self.start_state, moves), self.end_state)
+        moves = self.path_finder.compute_efficient_moves()
+        self.assertEqual(self.path_finder.apply_moves(moves), self.end_state)
     
     def test_moves(self):
-        moves = compute_efficient_moves(self.start_state, self.end_state)
+        moves = self.path_finder.compute_efficient_moves()
         self.assertEqual(list(moves), [(1, 2), (0, 1), (3, 0)])
 
 class TestInput(unittest.TestCase):
@@ -30,13 +31,15 @@ class TestInput(unittest.TestCase):
         # test if both states are empty
         start_state = []
         end_state = []
-        moves = compute_efficient_moves(start_state, end_state)
+        path_finder = PathFinder(start_state, end_state)
+        moves = path_finder.compute_efficient_moves()
         self.assertEqual(list(moves), list())
     
     def test_empty_state(self):
         # test if one of the states is empty
         start_state = [1, 2, 0, 3]
         end_state = []
+        path_finder = PathFinder(start_state, end_state)
         moves = compute_efficient_moves(start_state, end_state)
         self.assertRaises(IndexError, lambda: next(moves))
     
@@ -78,8 +81,9 @@ class TestEfficientFunction(unittest.TestCase):
     def test_two_cycles(self):
         start_state = [1, 2, 0, 3, 4, 5]
         end_state = [3, 1, 2, 0, 5, 4]
-        moves = list(compute_efficient_moves(start_state, end_state))
-        self.assertEqual(apply_moves(start_state, moves), end_state)
+        path_finder = PathFinder(start_state, end_state)
+        moves = list(path_finder.compute_efficient_moves())
+        self.assertEqual(path_finder.apply_moves(moves), end_state)
         self.assertEqual(len(moves), 6)
 
     def test_random_permutation(self):
@@ -89,14 +93,16 @@ class TestEfficientFunction(unittest.TestCase):
         random.shuffle(start_state)
         end_state = list(range(parking_size))
         random.shuffle(end_state)
-        moves = compute_efficient_moves(start_state, end_state)
-        self.assertEqual(apply_moves(start_state, moves), end_state)
+        path_finder = PathFinder(start_state, end_state)
+        moves = path_finder.compute_efficient_moves()
+        self.assertEqual(path_finder.apply_moves(moves), end_state)
 
     def test_pair_permutations(self):
         start_state = [2, 1, 4, 3, 6, 5, 7, 0]
         end_state = [1, 2, 3, 4, 5, 6, 7, 0]
-        moves = list(compute_efficient_moves(start_state, end_state))
-        self.assertEqual(apply_moves(start_state, moves), end_state)
+        path_finder = PathFinder(start_state, end_state)
+        moves = list(path_finder.compute_efficient_moves())
+        self.assertEqual(path_finder.apply_moves(moves), end_state)
         self.assertEqual(len(list(moves)), 9)
 
 

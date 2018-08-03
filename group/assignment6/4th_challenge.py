@@ -5,10 +5,20 @@ import sys
 
 class PathFinder:
     """
-    Args:
-        nums_to_states: {num_of_state: state}
-        states_to_nums: {state: num_of_state}
-        constraints: {parking_lot: (permitted cars)}
+    Builds a graph from all possible transitions from one parking state 
+    to another. Every possible state is encoded as an integer, and these 
+    integers serve as vertices of a graph. A task of finding 
+    all possible sequences of moves from one state to another is then 
+    translated as a task of finding all possible paths between two vertices.
+    Users can specify constraints for parking spaces and the number of
+    possible sequences they want to get.
+    
+    :param states_to_nums: dict with states encoded as integers,
+                           {state: num_of_state}
+    :param nums_to_states: dict with decoded integers for states,
+                           {num_of_state: state}
+    :param constraints: dict with constraints for parking lots,
+                        {parking_lot: (list of permitted cars)}
     """
     def __init__(self, start_state, end_state, constraints=None):
         self.nums_to_states = dict()
@@ -55,6 +65,9 @@ class PathFinder:
             raise e
 
     def _decode_path(self, path):
+        """
+        decodes list of paths as integers to sequences of states
+        """
         return [self.nums_to_states[x] for x in path]
 
     @staticmethod
@@ -65,11 +78,20 @@ class PathFinder:
         return current_state.index(0)
 
     def _check_state_validity(self, state):
+        """
+        Checks if the end or start state doesn't satisfy constraints and raises an error
+        """
         for place_num in range(len(state)):
             if state[place_num] not in self._constraints[place_num]:
                 raise ValueError
 
     def _build_graph(self, num_places):
+        """
+        Encodes all possible states as integers, builds a graph with states as vertices.
+        If constraints were specified, some of the edges are not added to the graph.
+        
+        :param num_places: number of parking lots, required to compute permutations
+        """
         graph = self._graph
         all_permutations = permutations(range(num_places))
         self.nums_to_states = dict(enumerate(map(list, all_permutations)))
@@ -89,8 +111,11 @@ class PathFinder:
 
     def find_all_paths(self, num_sequences=None):
         """
-
-        :param num_sequences: how many sequences users wants to see, if None function returns all
+        Finds all possible paths in the graph between two vertices. Paths are returned
+        as a generator. The requested number of sequences from the generator are returned.
+        
+        :param num_sequences: how many sequences a user wants to see, 
+                              if None function returns all possible sequences
         """
         paths_generator = self._graph.find_all_paths(self.states_to_nums[self.start_state],
                                           self.states_to_nums[self.end_state])

@@ -16,12 +16,12 @@ class PathFinder:
 
         if len(start_state) != len(end_state):
             raise (ValueError, "Start and end states should have the same length")
-        if not constraints:
-            raise(ValueError, "constraints can't be an empty dictionary")
         if constraints is None:
             length = len(start_state)
             self._constraints = {i: tuple(range(length)) for i in range(length)}
         else:
+            if not constraints:
+                raise (ValueError, "constraints can't be an empty dictionary")
             self._constraints = constraints
         self._start_state = start_state
         self._end_state = end_state

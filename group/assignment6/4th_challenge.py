@@ -25,7 +25,7 @@ class PathFinder:
         self.states_to_nums = dict()
 
         if len(start_state) != len(end_state):
-            raise (ValueError, "Start and end states should have the same length")
+            raise ValueError("Start and end states should have the same length")
         if constraints is None:
             length = len(start_state)
             self._constraints = {i: tuple(range(length)) for i in range(length)}

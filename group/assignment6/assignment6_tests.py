@@ -1,6 +1,7 @@
 import unittest
 import random
-from assignment6 import compute_moves, compute_efficient_moves, compute_all_moves, apply_moves
+from assignment6 import compute_moves, compute_efficient_moves, compute_all_moves
+from helpers import apply_moves
 from path_finder import PathFinder
 
 
@@ -8,7 +9,7 @@ class TestExample(unittest.TestCase):
     def setUp(self):
         self.start_state = [1, 2, 0, 3]
         self.end_state = [3, 1, 2, 0]
-        
+
     def test_compute_moves(self):
         # test the simple function
         moves = compute_moves(self.start_state, self.end_state)
@@ -21,43 +22,43 @@ class TestExample(unittest.TestCase):
                                         self.end_state)
         self.assertEqual(apply_moves(self.start_state, moves),
                          self.end_state)
-    
+
     def test_moves(self):
         moves = compute_efficient_moves(self.start_state, self.end_state)
         self.assertEqual(list(moves), [(1, 2), (0, 1), (3, 0)])
 
 
 class TestInput(unittest.TestCase):
-    # These test cases can be applied either to compute_moves() 
+    # These test cases can be applied either to compute_moves()
     # or to compute_efficient_moves()
-    
+
     def test_two_empty_states(self):
         # test if both states are empty
         start_state = []
         end_state = []
         moves = compute_efficient_moves(start_state, end_state)
         self.assertEqual(list(moves), list())
-    
+
     def test_empty_state(self):
         # test if one of the states is empty
         start_state = [1, 2, 0, 3]
         end_state = []
         moves = compute_efficient_moves(start_state, end_state)
         self.assertRaises(IndexError, lambda: next(moves))
-    
+
     def test_apply_to_empty(self):
         # test applying the moves to the empty start state
         start_state = []
         moves = [(1, 2), (0, 1), (3, 0)]
         self.assertRaises(IndexError,
                           lambda: apply_moves(start_state, moves))
-    
+
     def test_apply_empty_moves(self):
         # test applying an empty sequence of moves to the start state
         moves = []
         start_state = [1, 2, 0, 3]
         self.assertEqual(apply_moves(start_state, moves), start_state)
-        
+
     def test_nonexistent_indexes(self):
         # test trying to move cars with nonexistent indexes
         start_state = [1, 2, 0, 3]
@@ -146,5 +147,3 @@ class TestAllMoves(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-

@@ -108,7 +108,8 @@ class PathFinder:
                         if new_state[i] not in self._constraints[i]:
                             continue
                     new_state[empty], new_state[i] = new_state[i], new_state[empty]
-                    graph.edges[num].append(self._states_to_nums[tuple(new_state)])
+                    graph.edges[num].append(
+                        self._states_to_nums[tuple(new_state)])
 
     def find_all_paths(self):
         """
@@ -118,8 +119,9 @@ class PathFinder:
         """
         if not self.start_state:
             return []
-        return self._graph.find_all_paths(self._states_to_nums[self.start_state],
-                                          self._states_to_nums[self.end_state])
+        return self._graph.find_all_paths(
+            self._states_to_nums[self.start_state],
+            self._states_to_nums[self.end_state])
 
 
 class Graph:

@@ -90,7 +90,7 @@ class PathFinder:
         graph = self._graph
         all_permutations = permutations(range(num_places))
         self._nums_to_states = dict(enumerate(map(list, all_permutations)))
-        self.states_to_nums = {tuple(state): num for num, state in self._nums_to_states.items()}
+        self._states_to_nums = {tuple(state): num for num, state in self._nums_to_states.items()}
         graph.vertices = self._nums_to_states.keys()
         for num in graph.vertices:
             state = self._nums_to_states[num]
@@ -102,15 +102,17 @@ class PathFinder:
                         if new_state[i] not in self._constraints[i]:
                             continue
                     new_state[empty], new_state[i] = new_state[i], new_state[empty]
-                    graph.edges[num].append(self.states_to_nums[tuple(new_state)])
+                    graph.edges[num].append(self._states_to_nums[tuple(new_state)])
 
     def find_all_paths(self):
         """
         Finds all possible paths in the graph between two vertices. Paths are returned
         as a generator
         """
-        return self._graph.find_all_paths(self.states_to_nums[self.start_state],
-                                          self.states_to_nums[self.end_state])
+        if not self.start_state:
+            return []
+        return self._graph.find_all_paths(self._states_to_nums[self.start_state],
+                                          self._states_to_nums[self.end_state])
 
 
 class Graph:

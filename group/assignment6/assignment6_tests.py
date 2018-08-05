@@ -1,6 +1,6 @@
 import unittest
 import random
-from assignment6 import compute_moves, compute_efficient_moves, apply_moves
+from assignment6 import compute_moves, compute_efficient_moves, compute_all_moves, apply_moves
 
 
 class TestExample(unittest.TestCase):
@@ -73,6 +73,20 @@ class TestInput(unittest.TestCase):
         end_state = [3, 2, 1]
         moves = compute_efficient_moves(start_state, end_state)
         self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
+
+
+class TestAllMoves(unittest.TestCase):
+    def compute_all_moves_empty_states(self):
+        start_state = []
+        end_state = []
+        moves = list(compute_all_moves(start_state, end_state))
+        self.assertEqual(moves, [])
+
+    def compute_all_moves_simple_case(self):
+        start_state = [0, 1]
+        end_state = [1, 0]
+        moves = list(compute_all_moves(start_state, end_state))
+        self.assertEqual(moves, [[(1, 0)]])
 
 
 class TestEfficientFunction(unittest.TestCase):

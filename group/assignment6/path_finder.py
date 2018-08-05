@@ -1,5 +1,6 @@
 from collections import defaultdict
 from itertools import permutations
+from helpers import input_check
 
 class PathFinder:
     """
@@ -19,7 +20,7 @@ class PathFinder:
                         {parking_lot: (list of permitted cars)}
     """
     def __init__(self, start_state, end_state, constraints):
-        assert len(start_state) == len(end_state), "Start and end states have different length"
+
         self.nums_to_states = dict()
         self.states_to_nums = dict()
         self._constraints = constraints
@@ -60,8 +61,10 @@ class PathFinder:
         """
         return [self.nums_to_states[x] for x in path]
 
-    def find_empty(self, current_state):
+    @staticmethod
+    def find_empty(current_state):
         """
+        Assumes that empty lot is equal 0
         :returns: int, number of a currently empty lot
         """
         return current_state.index(0)
@@ -118,6 +121,10 @@ class Graph:
         self.vertices.add(v)
 
     def find_all_paths(self, start, end):
+        """
+        Finds all possible paths from the start vertex to the end
+        Algorithm is iterative to avoid recursion stack limitations
+        """
         nodes = [start]
         depths = [start]
         path = []

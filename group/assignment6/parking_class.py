@@ -1,4 +1,3 @@
-
 class Parking:
     """
     Args:
@@ -46,4 +45,4 @@ class Parking:
         self._state[move_to] = car
         self._inverted_state[0] = move_from
         self._inverted_state[car] = move_to
-        return (move_from, move_to)
+        return move_from, move_to

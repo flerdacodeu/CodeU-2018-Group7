@@ -1,5 +1,7 @@
 from collections import defaultdict
 from itertools import permutations
+from helpers import input_check
+
 
 class PathFinder:
     """
@@ -19,14 +21,14 @@ class PathFinder:
                         {parking_lot: (list of permitted cars)}
     """
     def __init__(self, start_state, end_state, constraints):
-        assert len(start_state) == len(end_state), "Start and end states have different length"
-        self.nums_to_states = dict()
-        self.states_to_nums = dict()
+
+        self._nums_to_states = dict()
+        self._states_to_nums = dict()
         self._constraints = constraints
+        self._graph = Graph()
+        self._build_graph(len(start_state))
         self.start_state = start_state
         self.end_state = end_state
-        self.graph = Graph()
-        self._build_graph(len(start_state))
 
     @property
     def start_state(self):
@@ -34,6 +36,7 @@ class PathFinder:
 
     @start_state.setter
     def start_state(self, value):
+        input_check(start_state=value)
         try:
             self._check_state_validity(value)
             self._start_state = value
@@ -47,6 +50,7 @@ class PathFinder:
 
     @end_state.setter
     def end_state(self, value):
+        input_check(end_state=value)
         try:
             self._check_state_validity(value)
             self._end_state = value
@@ -58,10 +62,12 @@ class PathFinder:
         """
         Decodes list of paths as integers to sequences of states
         """
-        return [self.nums_to_states[x] for x in path]
+        return [self._nums_to_states[x] for x in path]
 
-    def find_empty(self, current_state):
+    @staticmethod
+    def find_empty(current_state):
         """
+        Assumes that empty lot is equal 0
         :returns: int, number of a currently empty lot
         """
         return current_state.index(0)
@@ -81,13 +87,13 @@ class PathFinder:
 
         :param num_places: number of parking lots, required to compute permutations
         """
-        graph = self.graph
+        graph = self._graph
         all_permutations = permutations(range(num_places))
-        self.nums_to_states = dict(enumerate(map(list, all_permutations)))
-        self.states_to_nums = {tuple(state): num for num, state in self.nums_to_states.items()}
-        graph.vertices = self.nums_to_states.keys()
+        self._nums_to_states = dict(enumerate(map(list, all_permutations)))
+        self.states_to_nums = {tuple(state): num for num, state in self._nums_to_states.items()}
+        graph.vertices = self._nums_to_states.keys()
         for num in graph.vertices:
-            state = self.nums_to_states[num]
+            state = self._nums_to_states[num]
             empty = self.find_empty(state)
             for i in range(num_places):
                 if i != empty:
@@ -103,8 +109,8 @@ class PathFinder:
         Finds all possible paths in the graph between two vertices. Paths are returned
         as a generator
         """
-        return self.graph.find_all_paths(self.states_to_nums[self.start_state],\
-                                         self.states_to_nums[self.end_state])
+        return self._graph.find_all_paths(self.states_to_nums[self.start_state],
+                                          self.states_to_nums[self.end_state])
 
 
 class Graph:
@@ -118,6 +124,10 @@ class Graph:
         self.vertices.add(v)
 
     def find_all_paths(self, start, end):
+        """
+        Finds all possible paths from the start vertex to the end
+        Algorithm is iterative to avoid recursion stack limitations
+        """
         nodes = [start]
         depths = [start]
         path = []

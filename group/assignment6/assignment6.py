@@ -119,8 +119,8 @@ def compute_all_moves(start_state, end_state):
     
 
 if __name__ == '__main__':
-    start_state = [1, 2, 3] 
-    end_state = [3, 1, 2]
+    start_state = [1, 2, 3, 0]
+    end_state = [3, 1, 2, 0]
 
     print("Computing a moves sequence for the main problem...")
     moves = list(compute_moves(start_state, end_state))

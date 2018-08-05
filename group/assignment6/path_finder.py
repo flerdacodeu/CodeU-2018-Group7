@@ -74,7 +74,8 @@ class PathFinder:
 
     def _check_state_validity(self, state):
         """
-        Checks if the end or start state doesn't satisfy constraints and raises an error
+        Checks if the end or start state doesn't
+        satisfy constraints and raises an error
         """
         for place_num in range(len(state)):
             if state[place_num] not in self._constraints[place_num]:
@@ -82,17 +83,20 @@ class PathFinder:
 
     def _build_graph(self, num_places):
         """
-        Encodes all possible states as integers, builds a graph with states as vertices.
-        If constraints were specified, some of the edges are not added to the graph.
+        Encodes all possible states as integers, builds a graph with
+        states as vertices. If constraints were specified, some of the
+        edges are not added to the graph.
 
-        :param num_places: number of parking lots, required to compute permutations
+        :param num_places: number of parking lots,
+                           required to compute permutations
         """
         if num_places == 0:
             return
         graph = self._graph
         all_permutations = permutations(range(num_places))
         self._nums_to_states = dict(enumerate(map(list, all_permutations)))
-        self._states_to_nums = {tuple(state): num for num, state in self._nums_to_states.items()}
+        self._states_to_nums = {tuple(state): num for num, state
+                                in self._nums_to_states.items()}
         graph.vertices = self._nums_to_states.keys()
         for num in graph.vertices:
             state = self._nums_to_states[num]
@@ -108,7 +112,8 @@ class PathFinder:
 
     def find_all_paths(self):
         """
-        Finds all possible paths in the graph between two vertices. Paths are returned
+        Finds all possible paths in the graph between
+        two vertices. Paths are returned
         as a generator
         """
         if not self.start_state:

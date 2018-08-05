@@ -1,7 +1,7 @@
 import unittest
 import random
 from assignment6 import compute_moves, compute_efficient_moves, compute_all_moves, apply_moves
-
+from path_finder import PathFinder
 
 class TestExample(unittest.TestCase):
     def setUp(self):
@@ -73,6 +73,13 @@ class TestInput(unittest.TestCase):
         end_state = [3, 2, 1]
         moves = compute_efficient_moves(start_state, end_state)
         self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
+
+    def test_states_not_in_constraints(self):
+        # test input states don't satisfy given constraints
+        start_state = [0, 1, 2, 3]
+        end_state = [0, 2, 1, 3]
+        constraints = {0: (1, 3), 1: (0, 1, 2, 3), 2: (0, 1, 2, 3), 3: (0, 1, 2, 3)}
+        self.assertRaises(ValueError, lambda : PathFinder(start_state, end_state, constraints))
 
 
 class TestAllMoves(unittest.TestCase):

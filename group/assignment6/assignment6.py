@@ -41,7 +41,7 @@ def compute_moves(start_state, end_state):
 
 def compute_efficient_moves(start_state, end_state):
     """
-    More efficiently computes a sequence of moves that are required to rearrange 
+    More efficiently computes the shortest sequence of moves that are required to rearrange 
     cars from the given start state to the end state. We look up which lot is 
     empty and which car should be in this lot. Then we move the required car
     to the empty lot and repeat the procedure. 
@@ -77,13 +77,35 @@ def compute_efficient_moves(start_state, end_state):
 
 
 def compute_moves_with_constraints(start_state, end_state, constraints):
-    pass
+    """
+    Computes moves sequence under given constraints.
+
+    :param start_state: order of cars in the start of the rearrangement
+    :param end_state: order of cars after rearrangement
+    :param constraints: map from the parking lot to a tuple of the allowed cars
+    :yields: move steps. Each move is represented as a tuple with two indeces,
+             the 1st index is the number of lot from which we move the car,
+             the 2nd index is the number of lot to which we move the car
+    """
+    path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints)
+    paths = path_finder.find_all_paths()
+    path = path_finder.decode_path(next(paths))
+    for i in range(1, len(path)):
+        yield compute_move(path[i - 1], path[i])
 
 
 def compute_all_moves(start_state, end_state):
+    """
+    Computes alll possible ways to rearrange the cars from start_state to end_state.
+
+    :param start_state: order of cars in the start of the rearrangement
+    :param end_state: order of cars after rearrangement
+    :yields: a list of move steps. Each move is represented as a tuple with two indeces,
+             the 1st index is the number of lot from which we move the car,
+             the 2nd index is the number of lot to which we move the car
+    """
     parking_size = len(start_state)
-    constraints = {i:tuple(range(parking_size)) for i in range(parking_size)}
-    path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints) 
+    path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints={}) 
     paths = path_finder.find_all_paths()
     for path in paths:
         decoded_path = path_finder.decode_path(path)
@@ -106,12 +128,14 @@ if __name__ == '__main__':
     print(moves)
 
     print("Computing a moves sequence under given constraints...")
-    #moves = list(compute_moves_with_constraints(start_state, end_state, {}))
-    #print(moves)
+    constraints = {0: (1, 3), 1: (0, 1, 2, 3), 2: (0, 1, 2, 3), 3: (0, 1, 2, 3)}
+    moves = list(compute_moves_with_constraints(start_state, end_state, constraints))
+    print(moves)
 
     print("Computing all moves sequences between two parking states...")
     moves_sequences = list(compute_all_moves(start_state, end_state))
-    n = 5
-    print("First {} moves sequences:".format(n)) 
+    n_sequences = len(moves_sequences)
+    n = min(5, n_sequences)
+    print("Found {} possible moves sequences, printing first {} moves sequences:".format(n_sequences, n)) 
     for moves in moves_sequences[:n]:
         print(moves)

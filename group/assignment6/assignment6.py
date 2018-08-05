@@ -10,7 +10,7 @@ Car #1 is in the lot #0, car #2 is in the lot #1, etc.
 
 from parking_class import Parking
 from path_finder import PathFinder
-from helpers import apply_moves, compute_move, input_check
+from helpers import apply_moves, compute_move, check_input_validity
 
 
 def compute_moves(start_state, end_state):
@@ -26,7 +26,7 @@ def compute_moves(start_state, end_state):
              the first index is the number of lot from which we move the car,
              the second index is the number of lot to which we move the car
     """
-    input_check(start_state, end_state)
+    check_input_validity(start_state, end_state)
     parking = Parking(start_state.copy())
     for lot in range(len(parking)):
         end_car = end_state[lot]
@@ -53,7 +53,7 @@ def compute_efficient_moves(start_state, end_state):
              the 1st index is the number of lot from which we move the car,
              the 2nd index is the number of lot to which we move the car
     """
-    input_check(start_state, end_state)
+    check_input_validity(start_state, end_state)
     
     parking = Parking(start_state.copy())
     misplaced_car_lot = 0
@@ -83,7 +83,7 @@ def compute_moves_with_constraints(start_state, end_state, constraints):
              the 1st index is the number of lot from which we move the car,
              the 2nd index is the number of lot to which we move the car
     """
-    input_check(start_state, end_state)
+    check_input_validity(start_state, end_state)
     path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints)
     paths = path_finder.find_all_paths()
     path = path_finder.decode_path(next(paths))
@@ -101,7 +101,7 @@ def compute_all_moves(start_state, end_state):
              the 1st index is the number of lot from which we move the car,
              the 2nd index is the number of lot to which we move the car
     """
-    input_check(start_state, end_state)
+    check_input_validity(start_state, end_state)
     parking_size = len(start_state)
     constraints = {i: tuple(range(parking_size)) for i in range(parking_size)}
     path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints=constraints)

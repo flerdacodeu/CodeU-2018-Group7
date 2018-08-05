@@ -1,4 +1,3 @@
-
 import unittest
 import random
 from assignment6 import compute_moves, compute_efficient_moves, apply_moves

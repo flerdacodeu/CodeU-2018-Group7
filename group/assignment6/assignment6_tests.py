@@ -23,6 +23,7 @@ class TestExample(unittest.TestCase):
         moves = compute_efficient_moves(self.start_state, self.end_state)
         self.assertEqual(list(moves), [(1, 2), (0, 1), (3, 0)])
 
+
 class TestInput(unittest.TestCase):
     # These test cases can be applied either to compute_moves() 
     # or to compute_efficient_moves()

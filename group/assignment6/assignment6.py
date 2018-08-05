@@ -12,6 +12,7 @@ from parking_class import Parking
 from path_finder import PathFinder
 from helpers import apply_moves, compute_move, input_check
 
+
 def compute_moves(start_state, end_state):
     """
     Computes a sequence of moves that are required to rearrange cars
@@ -96,7 +97,8 @@ def compute_moves_with_constraints(start_state, end_state, constraints):
 
 def compute_all_moves(start_state, end_state):
     """
-    Computes alll possible ways to rearrange the cars from start_state to end_state.
+    Computes all possible ways to rearrange the cars from start_state to end_state.
+    
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement
     :yields: a list of move steps. Each move is represented as a tuple with two indeces,
@@ -104,7 +106,9 @@ def compute_all_moves(start_state, end_state):
              the 2nd index is the number of lot to which we move the car
     """
     input_check(start_state, end_state)
-    path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints={}) 
+    parking_size = len(start_state)
+    constraints = {i: tuple(range(parking_size)) for i in range(parking_size)}
+    path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints=constraints)
     paths = path_finder.find_all_paths()
     for path in paths:
         decoded_path = path_finder.decode_path(path)

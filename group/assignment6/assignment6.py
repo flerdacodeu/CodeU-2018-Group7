@@ -53,8 +53,6 @@ def compute_efficient_moves(start_state, end_state):
              the 1st index is the number of lot from which we move the car,
              the 2nd index is the number of lot to which we move the car
     """
-    if len(start_state) != len(end_state):
-        raise IndexError('The start state and end state have different lengths.')
     input_check(start_state, end_state)
     
     parking = Parking(start_state.copy())

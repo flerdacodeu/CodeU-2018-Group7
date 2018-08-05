@@ -2,6 +2,7 @@ from collections import defaultdict
 from itertools import permutations
 from helpers import input_check
 
+
 class PathFinder:
     """
     Builds a graph from all possible transitions from one parking state
@@ -35,6 +36,7 @@ class PathFinder:
 
     @start_state.setter
     def start_state(self, value):
+        input_check(start_state=value)
         try:
             self._check_state_validity(value)
             self._start_state = value
@@ -48,6 +50,7 @@ class PathFinder:
 
     @end_state.setter
     def end_state(self, value):
+        input_check(end_state=value)
         try:
             self._check_state_validity(value)
             self._end_state = value

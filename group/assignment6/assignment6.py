@@ -19,7 +19,6 @@ def compute_moves(start_state, end_state):
     For every lot number we look up which car should be placed in this lot.
     The current car is moved to the empty lot, the correct car is moved
     to the current lot.
-
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement
     :yields: move steps. Each move is represented as a tuple with two indeces,
@@ -49,7 +48,6 @@ def compute_efficient_moves(start_state, end_state):
     with the misplaced car and move the car from that lot to the empty one. 
     Then we perform the initial steps. When all the cars are on their places
     (misplaced_car == len(current_state)), algorithm is finished.
-
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement
     :yields: move steps. Each move is represented as a tuple with two indeces,
@@ -79,7 +77,6 @@ def compute_efficient_moves(start_state, end_state):
 def compute_moves_with_constraints(start_state, end_state, constraints):
     """
     Computes moves sequence under given constraints.
-
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement
     :param constraints: map from the parking lot to a tuple of the allowed cars
@@ -97,14 +94,12 @@ def compute_moves_with_constraints(start_state, end_state, constraints):
 def compute_all_moves(start_state, end_state):
     """
     Computes alll possible ways to rearrange the cars from start_state to end_state.
-
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement
     :yields: a list of move steps. Each move is represented as a tuple with two indeces,
              the 1st index is the number of lot from which we move the car,
              the 2nd index is the number of lot to which we move the car
     """
-    parking_size = len(start_state)
     path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints={}) 
     paths = path_finder.find_all_paths()
     for path in paths:

@@ -1,3 +1,4 @@
+
 class Parking:
     """
     Args:
@@ -12,8 +13,6 @@ class Parking:
 
     def _compute_inverted_state(self):
         inverted_state = list(range(len(self._state)))
-        if inverted_state != sorted(self._state):
-            raise IndexError('Invalid state')
         for lot, car in enumerate(self._state):
             inverted_state[car] = lot
         return inverted_state
@@ -25,8 +24,6 @@ class Parking:
         """
         :returns: int, number of a lot in which a given car is currently placed
         """
-        if car >= len(self._inverted_state) or car < 0:
-            raise IndexError('Invalid state')
         return self._inverted_state[car]
 
     def get_state(self):
@@ -50,4 +47,3 @@ class Parking:
         self._inverted_state[0] = move_from
         self._inverted_state[car] = move_to
         return (move_from, move_to)
-    

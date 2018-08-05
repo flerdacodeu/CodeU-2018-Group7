@@ -108,6 +108,17 @@ class TestEfficientFunction(unittest.TestCase):
         self.assertEqual(apply_moves(start_state, moves), end_state)
         self.assertEqual(len(list(moves)), 9)
 
+    def test_efficient(self):
+        # compute efficient moves and then check if it is really the shortest one
+        start_state = [0, 1, 2, 3]
+        end_state = [0, 2, 1, 3]
+        moves = list(compute_efficient_moves(start_state, end_state))
+        all_sequences = list(compute_all_moves(start_state, end_state))
+        min_length = min(len(sequence) for sequence in all_sequences)
+        shortest_sequences = [sequence for sequence in all_sequences
+                              if len(sequence) == min_length]
+        self.assertIn(moves, shortest_sequences)
+
 
 class TestAllMoves(unittest.TestCase):
     def test_all_moves_empty_states(self):

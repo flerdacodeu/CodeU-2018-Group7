@@ -87,6 +87,8 @@ class PathFinder:
 
         :param num_places: number of parking lots, required to compute permutations
         """
+        if num_places == 0:
+            return
         graph = self._graph
         all_permutations = permutations(range(num_places))
         self._nums_to_states = dict(enumerate(map(list, all_permutations)))

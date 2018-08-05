@@ -36,12 +36,12 @@ def input_check(start_state=None, end_state=None):
         if list(range(len(start_state))) != sorted(start_state):
             raise IndexError('Invalid start state')
         num_of_zeros_start = start_state.count(0)
-        if num_of_zeros_start != 1:
-            raise IndexError('Invalid start state, there is not empty slot')
+        if num_of_zeros_start > 1:
+            raise IndexError('Invalid start state')
 
     if end_state is not None:
         if list(range(len(end_state))) != sorted(end_state):
             raise IndexError('Invalid end state')
         num_of_zeros_end = end_state.count(0)
-        if num_of_zeros_end != 1:
-            raise IndexError('Invalid end state, there is not empty slot')
+        if num_of_zeros_end > 1:
+            raise IndexError('Invalid end state')

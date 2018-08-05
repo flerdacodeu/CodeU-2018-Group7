@@ -39,9 +39,9 @@ def compute_moves(start_state, end_state):
 
 def compute_efficient_moves(start_state, end_state):
     """
-    More efficiently computes the shortest sequence of moves that are required to rearrange
-    cars from the given start state to the end state. We look up which lot is
-    empty and which car should be in this lot. Then we move the required car
+    More efficiently computes the shortest sequence of moves that are required to
+    rearrange cars from the given start state to the end state. We look up which lot
+    is empty and which car should be in this lot. Then we move the required car
     to the empty lot and repeat the procedure.
     If empty slot is empty in the end state too, we take the leftmost lot
     with the misplaced car and move the car from that lot to the empty one.
@@ -91,7 +91,7 @@ def compute_all_moves(start_state, end_state):
     """
     Computes all possible ways to rearrange the cars from
     start_state to end_state.
- 
+
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement
     :yields: a list of move steps. Each move is represented as a tuple
@@ -113,7 +113,7 @@ def compute_all_moves(start_state, end_state):
             moves_sequence.append(
                 compute_move(decoded_path[i - 1], decoded_path[i]))
         yield moves_sequence
-   
+ 
 
 def main():
     start_state = [1, 2, 3, 0]

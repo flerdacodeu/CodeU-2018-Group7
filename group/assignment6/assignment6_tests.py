@@ -76,13 +76,13 @@ class TestInput(unittest.TestCase):
 
 
 class TestAllMoves(unittest.TestCase):
-    def compute_all_moves_empty_states(self):
+    def test_all_moves_empty_states(self):
         start_state = []
         end_state = []
         moves = list(compute_all_moves(start_state, end_state))
         self.assertEqual(moves, [])
 
-    def compute_all_moves_simple_case(self):
+    def test_all_moves_simple_case(self):
         start_state = [0, 1]
         end_state = [1, 0]
         moves = list(compute_all_moves(start_state, end_state))

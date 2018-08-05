@@ -3,7 +3,6 @@ from parking_class import Parking
 def apply_moves(start_state, moves):
     """
     Applies the sequence of moves to a given state.
-
     :param start_state: order of cars in the start of the rearrangement
     :param moves: generator, sequence of moves that we need to apply.
                   Each move is represented as a tuple with two indices,
@@ -11,6 +10,7 @@ def apply_moves(start_state, moves):
                   the 2nd index is the number of lot to which we move the car
     :returns: end state, list of car numbers.
     """
+    input_check(start_state)
     parking = Parking(start_state.copy())
     for move in moves:
         move_from, move_to = move
@@ -21,10 +21,25 @@ def compute_move(start_state, end_state):
     """
     Computes a move from one state to another under an assumption that end_state differs from
     start_state by one move of some car to an empty lot.
-
     :returns a tuple
     """
     empty_lot = start_state.index(0)
     car = end_state[empty_lot]
     move_from = start_state.index(car)
     return (move_from, empty_lot)
+
+def input_check(start_state = [], end_state = []):
+    
+    if start_state != []:
+        if list(range(len(start_state))) != sorted(start_state): 
+            raise IndexError('Invalid state')    
+        num_of_zeros_start = start_state.count(0)
+        if num_of_zeros_start < 1:
+            raise IndexError('Invalid state')
+        
+    if end_state != []:
+        if list(range(len(end_state))) != sorted(end_state):
+            raise IndexError('Invalid state')
+        num_of_zeros_end = end_state.count(0)
+        if num_of_zeros_end < 1:
+            raise IndexError('Invalid state')

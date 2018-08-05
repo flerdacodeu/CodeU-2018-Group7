@@ -106,7 +106,8 @@ def compute_all_moves(start_state, end_state):
              the 2nd index is the number of lot to which we move the car
     """
     parking_size = len(start_state)
-    path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints={}) 
+    constraints = {i: tuple(range(parking_size)) for i in range(parking_size)}
+    path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints=constraints)
     paths = path_finder.find_all_paths()
     for path in paths:
         decoded_path = path_finder.decode_path(path)

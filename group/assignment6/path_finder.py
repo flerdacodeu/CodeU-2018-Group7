@@ -25,8 +25,8 @@ class PathFinder:
         self.nums_to_states = dict()
         self.states_to_nums = dict()
         self._constraints = constraints
-        self._start_state = start_state
-        self._end_state = end_state
+        self.start_state = start_state
+        self.end_state = end_state
         self.graph = Graph()
         self._build_graph(len(start_state))
 
@@ -144,17 +144,3 @@ class Graph:
                     depths.append(node)
             if not has_new:
                 path.pop()
-
-    def find_all_paths_recursive(self, start, end, path=None):
-        if path is None:
-            path = []
-        path = path + [start]
-        if start == end:
-            return [path]
-        paths = []
-        for node in self.edges[start]:
-            if node not in path:
-                new_paths = self.find_all_paths(node, end, path)
-                for new_path in new_paths:
-                    paths.append(new_path)
-        return paths

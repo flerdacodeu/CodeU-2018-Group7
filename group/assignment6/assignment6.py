@@ -10,7 +10,7 @@ Car #1 is in the lot #0, car #2 is in the lot #1, etc.
 
 from parking_class import Parking
 from path_finder import PathFinder
-from helpers import apply_moves, compute_move
+from helpers import apply_moves, compute_move, input_check
 
 
 def compute_moves(start_state, end_state):
@@ -20,7 +20,6 @@ def compute_moves(start_state, end_state):
     For every lot number we look up which car should be placed in this lot.
     The current car is moved to the empty lot, the correct car is moved
     to the current lot.
-
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement
     :yields: move steps. Each move is represented as a tuple with two indeces,
@@ -29,7 +28,7 @@ def compute_moves(start_state, end_state):
     """
     if len(start_state) != len(end_state):
         raise IndexError('The start state and end state have different lengths.')
-
+    input_check(start_state, end_state)
     parking = Parking(start_state.copy())
     for lot in range(len(parking)):
         end_car = end_state[lot]
@@ -50,7 +49,6 @@ def compute_efficient_moves(start_state, end_state):
     with the misplaced car and move the car from that lot to the empty one. 
     Then we perform the initial steps. When all the cars are on their places
     (misplaced_car == len(current_state)), algorithm is finished.
-
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement
     :yields: move steps. Each move is represented as a tuple with two indeces,
@@ -59,6 +57,8 @@ def compute_efficient_moves(start_state, end_state):
     """
     if len(start_state) != len(end_state):
         raise IndexError('The start state and end state have different lengths.')
+    input_check(start_state, end_state)
+    
     parking = Parking(start_state.copy())
     misplaced_car_lot = 0
     
@@ -80,7 +80,6 @@ def compute_efficient_moves(start_state, end_state):
 def compute_moves_with_constraints(start_state, end_state, constraints):
     """
     Computes moves sequence under given constraints.
-
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement
     :param constraints: map from the parking lot to a tuple of the allowed cars
@@ -88,6 +87,7 @@ def compute_moves_with_constraints(start_state, end_state, constraints):
              the 1st index is the number of lot from which we move the car,
              the 2nd index is the number of lot to which we move the car
     """
+    input_check(start_state, end_state)
     path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints)
     paths = path_finder.find_all_paths()
     path = path_finder.decode_path(next(paths))
@@ -98,13 +98,14 @@ def compute_moves_with_constraints(start_state, end_state, constraints):
 def compute_all_moves(start_state, end_state):
     """
     Computes all possible ways to rearrange the cars from start_state to end_state.
-
+    
     :param start_state: order of cars in the start of the rearrangement
     :param end_state: order of cars after rearrangement
     :yields: a list of move steps. Each move is represented as a tuple with two indeces,
              the 1st index is the number of lot from which we move the car,
              the 2nd index is the number of lot to which we move the car
     """
+    input_check(start_state, end_state)
     parking_size = len(start_state)
     constraints = {i: tuple(range(parking_size)) for i in range(parking_size)}
     path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints=constraints)
@@ -118,7 +119,7 @@ def compute_all_moves(start_state, end_state):
     
 
 if __name__ == '__main__':
-    start_state = [1, 2, 0, 3] 
+    start_state = [1, 2, 3, 0]
     end_state = [3, 1, 2, 0]
 
     print("Computing a moves sequence for the main problem...")

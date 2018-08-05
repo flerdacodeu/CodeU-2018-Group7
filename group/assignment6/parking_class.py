@@ -1,3 +1,4 @@
+
 class Parking:
     """
     Args:
@@ -37,7 +38,6 @@ class Parking:
     def move_to_empty_lot(self, car):
         """
         Moves a car from the lot to an empty lot.
-
         :param car: int, number of a car that is moving to an empty lot
         """
         move_from = self.get_lot(car)

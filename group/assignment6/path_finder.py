@@ -116,18 +116,3 @@ class Graph:
                     depths.append(node)
             if not has_new:
                 path.pop()
-
-    def find_all_paths_recursive(self, start, end, path=None):
-        if path is None:
-            path = []
-        print(start, end, path)
-        path = path + [start]
-        if start == end:
-            return [path]
-        paths = []
-        for node in self.edges[start]:
-            if node not in path:
-                new_paths = self.find_all_paths(node, end, path)
-                for new_path in new_paths:
-                    paths.append(new_path)
-        return paths

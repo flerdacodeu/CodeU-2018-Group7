@@ -9,7 +9,8 @@ Car #1 is in the lot #0, car #2 is in the lot #1, etc.
 """
 
 from parking_class import Parking
-
+from path_finder import PathFinder
+from helpers import apply_moves, compute_move
 
 def compute_moves(start_state, end_state):
     """
@@ -75,27 +76,42 @@ def compute_efficient_moves(start_state, end_state):
             yield parking.move_to_empty_lot(parking.get_car(misplaced_car_lot))
 
 
-def apply_moves(start_state, moves):
-    """
-    Applies the sequence of moves to a given state.
+def compute_moves_with_constraints(start_state, end_state, constraints):
+    pass
 
-    :param start_state: order of cars in the start of the rearrangement
-    :param moves: generator, sequence of moves that we need to apply.
-                  Each move is represented as a tuple with two indices,
-                  the 1st index is the number of lot from which we move the car,
-                  the 2nd index is the number of lot to which we move the car
-    :returns: end state, list of car numbers.
-    """
-    parking = Parking(start_state.copy())
-    for move in moves:
-        move_from, move_to = move
-        parking.move_to_empty_lot(parking.get_car(move_from))
-    return parking.get_state()
 
+def compute_all_moves(start_state, end_state):
+    parking_size = len(start_state)
+    constraints = {i:tuple(range(parking_size)) for i in range(parking_size)}
+    path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints) 
+    paths = path_finder.find_all_paths()
+    for path in paths:
+        decoded_path = path_finder.decode_path(path)
+        moves_sequence = list()
+        for i in range(1, len(decoded_path)):
+            moves_sequence.append(compute_move(decoded_path[i - 1], decoded_path[i]))
+        yield moves_sequence
+    
 
 if __name__ == '__main__':
     start_state = [1, 2, 0, 3] 
     end_state = [3, 1, 2, 0]
+
+    print("Computing a moves sequence for the main problem...")
     moves = list(compute_moves(start_state, end_state))
     print(moves)
-    print(apply_moves(start_state, moves))
+    
+    print("Computing the shortest moves sequence...")
+    moves = list(compute_efficient_moves(start_state, end_state))
+    print(moves)
+
+    print("Computing a moves sequence under given constraints...")
+    #moves = list(compute_moves_with_constraints(start_state, end_state, {}))
+    #print(moves)
+
+    print("Computing all moves sequences between two parking states...")
+    moves_sequences = list(compute_all_moves(start_state, end_state))
+    n = 5
+    print("First {} moves sequences:".format(n)) 
+    for moves in moves_sequences[:n]:
+        print(moves)

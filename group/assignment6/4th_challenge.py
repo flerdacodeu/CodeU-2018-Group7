@@ -1,5 +1,7 @@
 from collections import defaultdict
 from itertools import permutations
+import sys
+
 
 class PathFinder:
     """
@@ -16,7 +18,7 @@ class PathFinder:
         self._start_state = start_state
         self._end_state = end_state
         self.graph = Graph()
-        self._build_graph(len(start_state))
+        self.build_graph(len(start_state))
 
     @property
     def start_state(self):
@@ -25,7 +27,7 @@ class PathFinder:
     @start_state.setter
     def start_state(self, value):
         try:
-            self._check_state_validity(value)
+            self.check_state(value)
             self._start_state = value
         except ValueError as e:
             print("Start state doesn't satisfy constraints")
@@ -38,7 +40,7 @@ class PathFinder:
     @end_state.setter
     def end_state(self, value):
         try:
-            self._check_state_validity(value)
+            self.check_state(value)
             self._end_state = value
         except ValueError as e:
             print("End state doesn't satisfy constraints")
@@ -53,12 +55,12 @@ class PathFinder:
         """
         return current_state.index(0)
 
-    def _check_state_validity(self, state):
+    def check_state(self, state):
         for place_num in range(len(state)):
             if state[place_num] not in self._constraints[place_num]:
                 raise ValueError
 
-    def _build_graph(self, num_places):
+    def build_graph(self, num_places):
         graph = self.graph
         all_permutations = permutations(range(num_places))
         self.nums_to_states = dict(enumerate(map(list, all_permutations)))
@@ -116,3 +118,12 @@ class Graph:
                     depths.append(node)
             if not has_new:
                 path.pop()
+
+if __name__ == '__main__':
+    start_state = (1, 2, 0, 3, 4, 5, 6, 7)
+    end_state = (2, 1, 3, 0, 4, 5, 6, 7)
+    num_sequences = 1
+    path_finder = PathFinder(start_state, end_state, constraints={i:tuple(range(8)) for i in range(8)})
+    my_paths = list(next(path_finder.find_all_paths()) for _ in range(num_sequences))
+    decoded_paths = [path_finder.decode_path(path) for path in my_paths]
+    print(decoded_paths)

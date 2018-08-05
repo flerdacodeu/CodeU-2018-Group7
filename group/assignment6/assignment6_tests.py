@@ -1,4 +1,3 @@
-
 import unittest
 import random
 from assignment6 import compute_moves, compute_efficient_moves, apply_moves
@@ -52,27 +51,6 @@ class TestInput(unittest.TestCase):
         moves = []
         start_state = [1, 2, 0, 3]
         self.assertEqual(apply_moves(start_state, moves), start_state)
-        
-    def test_nonexistent_indexes(self):
-        # test trying to move cars with nonexistent indexes
-        start_state = [1, 2, 0, 3]
-        end_state = [123, 0, 143, 79]
-        moves = compute_efficient_moves(start_state, end_state)
-        self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
-
-    def test_same_car_index(self):
-        # test having same car on multiple parking lots
-        start_state = [2, 2, 2, 0]
-        end_state = [2, 2, 2, 0]
-        moves = compute_efficient_moves(start_state, end_state)
-        self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
-
-    def test_no_empty_lot(self):
-        # test parking without empty parking lots
-        start_state = [1, 2, 3]
-        end_state = [3, 2, 1]
-        moves = compute_efficient_moves(start_state, end_state)
-        self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
 
 
 class TestEfficientFunction(unittest.TestCase):
@@ -103,5 +81,4 @@ class TestEfficientFunction(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
+    

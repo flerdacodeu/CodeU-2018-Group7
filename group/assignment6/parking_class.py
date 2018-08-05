@@ -1,8 +1,7 @@
-
 class Parking:
     """
     Args:
-        state: a list of car indices that should be in range(0, len(state))
+        constraints: {parking_lot: (permitted cars)}
     """
     def __init__(self, state):
         self._state = state
@@ -38,6 +37,7 @@ class Parking:
     def move_to_empty_lot(self, car):
         """
         Moves a car from the lot to an empty lot.
+
         :param car: int, number of a car that is moving to an empty lot
         """
         move_from = self.get_lot(car)

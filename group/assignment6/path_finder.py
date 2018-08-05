@@ -56,7 +56,7 @@ class PathFinder:
             print("End state doesn't satisfy constraints")
             raise e
 
-    def _decode_path(self, path):
+    def decode_path(self, path):
         """
         Decodes list of paths as integers to sequences of states
         """

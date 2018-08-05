@@ -90,7 +90,7 @@ def compute_moves_with_constraints(start_state, end_state, constraints):
     """
     path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints)
     paths = path_finder.find_all_paths()
-    path = path_finder._decode_path(next(paths))
+    path = path_finder.decode_path(next(paths))
     for i in range(1, len(path)):
         yield compute_move(path[i - 1], path[i])
 
@@ -109,7 +109,7 @@ def compute_all_moves(start_state, end_state):
     path_finder = PathFinder(tuple(start_state), tuple(end_state), constraints={}) 
     paths = path_finder.find_all_paths()
     for path in paths:
-        decoded_path = path_finder._decode_path(path)
+        decoded_path = path_finder.decode_path(path)
         moves_sequence = list()
         for i in range(1, len(decoded_path)):
             moves_sequence.append(compute_move(decoded_path[i - 1], decoded_path[i]))

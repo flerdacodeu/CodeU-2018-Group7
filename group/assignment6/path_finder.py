@@ -22,13 +22,13 @@ class PathFinder:
     """
     def __init__(self, start_state, end_state, constraints):
 
-        self.nums_to_states = dict()
-        self.states_to_nums = dict()
+        self._nums_to_states = dict()
+        self._states_to_nums = dict()
         self._constraints = constraints
+        self._graph = Graph()
+        self._build_graph(len(start_state))
         self.start_state = start_state
         self.end_state = end_state
-        self.graph = Graph()
-        self._build_graph(len(start_state))
 
     @property
     def start_state(self):
@@ -62,7 +62,7 @@ class PathFinder:
         """
         Decodes list of paths as integers to sequences of states
         """
-        return [self.nums_to_states[x] for x in path]
+        return [self._nums_to_states[x] for x in path]
 
     @staticmethod
     def find_empty(current_state):
@@ -87,13 +87,13 @@ class PathFinder:
 
         :param num_places: number of parking lots, required to compute permutations
         """
-        graph = self.graph
+        graph = self._graph
         all_permutations = permutations(range(num_places))
-        self.nums_to_states = dict(enumerate(map(list, all_permutations)))
-        self.states_to_nums = {tuple(state): num for num, state in self.nums_to_states.items()}
-        graph.vertices = self.nums_to_states.keys()
+        self._nums_to_states = dict(enumerate(map(list, all_permutations)))
+        self.states_to_nums = {tuple(state): num for num, state in self._nums_to_states.items()}
+        graph.vertices = self._nums_to_states.keys()
         for num in graph.vertices:
-            state = self.nums_to_states[num]
+            state = self._nums_to_states[num]
             empty = self.find_empty(state)
             for i in range(num_places):
                 if i != empty:
@@ -109,8 +109,8 @@ class PathFinder:
         Finds all possible paths in the graph between two vertices. Paths are returned
         as a generator
         """
-        return self.graph.find_all_paths(self.states_to_nums[self.start_state],\
-                                         self.states_to_nums[self.end_state])
+        return self._graph.find_all_paths(self.states_to_nums[self.start_state],
+                                          self.states_to_nums[self.end_state])
 
 
 class Graph:

@@ -1,6 +1,7 @@
 import unittest
 from path_finder import Graph
 
+
 def build_graph_from_pairs(pairs):
     graph = Graph()
     for pair in pairs:
@@ -8,8 +9,8 @@ def build_graph_from_pairs(pairs):
         graph.add_edge(pair[1], pair[0])
     return graph
 
+
 class GraphTest(unittest.TestCase):
-    #"""
     def test_two_vertices(self):
         graph = build_graph_from_pairs(['AB'])
         self.assertEqual(list(graph.find_all_paths('A', 'B')), [['A', 'B']])
@@ -27,9 +28,9 @@ class GraphTest(unittest.TestCase):
         graph = build_graph_from_pairs(['AB', 'AC', 'AD', 'BC', 'BD', 'CD'])
         result = sorted(list(graph.find_all_paths('A', 'D')))
         self.assertEqual(result,
-                         sorted([['A', 'D'], ['A', 'B', 'D'], ['A', 'C', 'D'], ['A', 'B', 'C',
-                             'D'], ['A', 'C', 'B', 'D']]))
-    #"""
+                         sorted([['A', 'D'], ['A', 'B', 'D'],
+                                 ['A', 'C', 'D'], ['A', 'B', 'C','D'],
+                                 ['A', 'C', 'B', 'D']]))
 
     def test_complete_graph_5(self):
         graph = Graph()
@@ -39,7 +40,6 @@ class GraphTest(unittest.TestCase):
                     graph.add_edge(v1, v2)
 
         result = sorted(list(graph.find_all_paths('A', 'D')))
-        # print(result)
         self.assertEqual(len(result), 16)
 
     def test_three_vertices(self):

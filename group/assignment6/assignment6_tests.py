@@ -1,7 +1,7 @@
-
 import unittest
 import random
-from assignment6 import compute_moves, compute_efficient_moves, apply_moves
+from assignment6 import compute_moves, compute_efficient_moves, compute_all_moves, apply_moves
+from path_finder import PathFinder
 
 
 class TestExample(unittest.TestCase):
@@ -12,16 +12,20 @@ class TestExample(unittest.TestCase):
     def test_compute_moves(self):
         # test the simple function
         moves = compute_moves(self.start_state, self.end_state)
-        self.assertEqual(apply_moves(self.start_state, moves), self.end_state)
+        self.assertEqual(apply_moves(self.start_state, moves),
+                         self.end_state)
 
     def test_compute_efficient_moves(self):
         # test the efficient function, challenge #2
-        moves = compute_efficient_moves(self.start_state, self.end_state)
-        self.assertEqual(apply_moves(self.start_state, moves), self.end_state)
+        moves = compute_efficient_moves(self.start_state,
+                                        self.end_state)
+        self.assertEqual(apply_moves(self.start_state, moves),
+                         self.end_state)
     
     def test_moves(self):
         moves = compute_efficient_moves(self.start_state, self.end_state)
         self.assertEqual(list(moves), [(1, 2), (0, 1), (3, 0)])
+
 
 class TestInput(unittest.TestCase):
     # These test cases can be applied either to compute_moves() 
@@ -45,7 +49,8 @@ class TestInput(unittest.TestCase):
         # test applying the moves to the empty start state
         start_state = []
         moves = [(1, 2), (0, 1), (3, 0)]
-        self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
+        self.assertRaises(IndexError,
+                          lambda: apply_moves(start_state, moves))
     
     def test_apply_empty_moves(self):
         # test applying an empty sequence of moves to the start state
@@ -58,21 +63,34 @@ class TestInput(unittest.TestCase):
         start_state = [1, 2, 0, 3]
         end_state = [123, 0, 143, 79]
         moves = compute_efficient_moves(start_state, end_state)
-        self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
+        self.assertRaises(IndexError,
+                          lambda: apply_moves(start_state, moves))
 
     def test_same_car_index(self):
         # test having same car on multiple parking lots
         start_state = [2, 2, 2, 0]
         end_state = [2, 2, 2, 0]
         moves = compute_efficient_moves(start_state, end_state)
-        self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
+        self.assertRaises(IndexError,
+                          lambda: apply_moves(start_state, moves))
 
     def test_no_empty_lot(self):
         # test parking without empty parking lots
         start_state = [1, 2, 3]
         end_state = [3, 2, 1]
         moves = compute_efficient_moves(start_state, end_state)
-        self.assertRaises(IndexError, lambda: apply_moves(start_state, moves))
+        self.assertRaises(IndexError,
+                          lambda: apply_moves(start_state, moves))
+
+    def test_states_not_in_constraints(self):
+        # test input states don't satisfy given constraints
+        start_state = [0, 1, 2, 3]
+        end_state = [0, 2, 1, 3]
+        constraints = {0: (1, 3), 1: (0, 1, 2, 3),
+                       2: (0, 1, 2, 3), 3: (0, 1, 2, 3)}
+        self.assertRaises(ValueError, lambda: PathFinder(start_state,
+                                                         end_state,
+                                                         constraints))
 
 
 class TestEfficientFunction(unittest.TestCase):
@@ -100,6 +118,31 @@ class TestEfficientFunction(unittest.TestCase):
         self.assertEqual(apply_moves(start_state, moves), end_state)
         self.assertEqual(len(list(moves)), 9)
 
+    def test_efficient(self):
+        # compute efficient moves and then
+        # check if it is really the shortest one
+        start_state = [0, 1, 2, 3]
+        end_state = [0, 2, 1, 3]
+        moves = list(compute_efficient_moves(start_state, end_state))
+        all_sequences = list(compute_all_moves(start_state, end_state))
+        min_length = min(len(sequence) for sequence in all_sequences)
+        shortest_sequences = [sequence for sequence in all_sequences
+                              if len(sequence) == min_length]
+        self.assertIn(moves, shortest_sequences)
+
+
+class TestAllMoves(unittest.TestCase):
+    def test_all_moves_empty_states(self):
+        start_state = []
+        end_state = []
+        moves = list(compute_all_moves(start_state, end_state))
+        self.assertEqual(moves, [])
+
+    def test_all_moves_simple_case(self):
+        start_state = [0, 1]
+        end_state = [1, 0]
+        moves = list(compute_all_moves(start_state, end_state))
+        self.assertEqual(moves, [[(1, 0)]])
 
 if __name__ == '__main__':
     unittest.main()

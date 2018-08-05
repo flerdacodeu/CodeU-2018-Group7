@@ -18,7 +18,7 @@ class GraphTest(unittest.TestCase):
     def test_square(self):
         graph = build_graph_from_pairs(['AB', 'BD', 'DC', 'CA'])
         result = sorted(list(graph.find_all_paths('A', 'D')))
-        self.assertEqual(result, 
+        self.assertEqual(result,
                          sorted([['A', 'B', 'D'], ['A', 'C', 'D']]))
         result = sorted(list(graph.find_all_paths('A', 'C')))
         self.assertEqual(result,
@@ -29,7 +29,7 @@ class GraphTest(unittest.TestCase):
         result = sorted(list(graph.find_all_paths('A', 'D')))
         self.assertEqual(result,
                          sorted([['A', 'D'], ['A', 'B', 'D'],
-                                 ['A', 'C', 'D'], ['A', 'B', 'C','D'],
+                                 ['A', 'C', 'D'], ['A', 'B', 'C', 'D'],
                                  ['A', 'C', 'B', 'D']]))
 
     def test_complete_graph_5(self):
@@ -44,14 +44,16 @@ class GraphTest(unittest.TestCase):
 
     def test_three_vertices(self):
         graph = build_graph_from_pairs(['AB', 'BC'])
-        self.assertEqual(list(graph.find_all_paths('A', 'C')), [['A', 'B', 'C']])
+        self.assertEqual(list(graph.find_all_paths('A', 'C')),
+                         [['A', 'B', 'C']])
 
     def test_six_vertices(self):
-        graph = build_graph_from_pairs(['AB', 'AC', 'AD', 'AE', 'FB', 'FC', 'FD', 'FE'])
+        graph = build_graph_from_pairs(
+            ['AB', 'AC', 'AD', 'AE', 'FB', 'FC', 'FD', 'FE'])
         result = sorted(list(graph.find_all_paths('A', 'F')))
         self.assertEqual(result,
-                         sorted([['A', 'B', 'F'], ['A', 'C', 'F'], ['A', 'D', 'F'], ['A', 'E',
-                             'F']]))
+                         sorted([['A', 'B', 'F'], ['A', 'C', 'F'],
+                                 ['A', 'D', 'F'], ['A', 'E', 'F']]))
 
     def test_complete_graph_6(self):
         graph = Graph()
@@ -63,10 +65,12 @@ class GraphTest(unittest.TestCase):
         self.assertEqual(len(result), 65)
 
     def test_resistance(self):
-        graph = build_graph_from_pairs(['AB', 'BC', 'BD', 'CE', 'DE', 'EF', 'AG'])
+        graph = build_graph_from_pairs(
+            ['AB', 'BC', 'BD', 'CE', 'DE', 'EF', 'AG'])
         result = sorted(list(graph.find_all_paths('A', 'F')))
         self.assertEqual(result,
-                         sorted([['A', 'B', 'C', 'E', 'F'], ['A', 'B', 'D', 'E', 'F']]))
+                         sorted([['A', 'B', 'C', 'E', 'F'],
+                                 ['A', 'B', 'D', 'E', 'F']]))
 
     def test_two_complete_graphs(self):
         graph = Graph()

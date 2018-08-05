@@ -1,12 +1,14 @@
 import unittest
 from path_finder import Graph
 
+
 def build_graph_from_pairs(pairs):
     graph = Graph()
     for pair in pairs:
         graph.add_edge(pair[0], pair[1])
         graph.add_edge(pair[1], pair[0])
     return graph
+
 
 class GraphTest(unittest.TestCase):
     #"""

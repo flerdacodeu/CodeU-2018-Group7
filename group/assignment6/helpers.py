@@ -1,5 +1,6 @@
 from parking_class import Parking
 
+
 def apply_moves(start_state, moves):
     """
     Applies the sequence of moves to a given state.
@@ -17,6 +18,7 @@ def apply_moves(start_state, moves):
         parking.move_to_empty_lot(parking.get_car(move_from))
     return parking.get_state()
 
+
 def compute_move(start_state, end_state):
     """
     Computes a move from one state to another under an assumption that end_state differs from
@@ -27,4 +29,4 @@ def compute_move(start_state, end_state):
     empty_lot = start_state.index(0)
     car = end_state[empty_lot]
     move_from = start_state.index(car)
-    return (move_from, empty_lot)
+    return move_from, empty_lot

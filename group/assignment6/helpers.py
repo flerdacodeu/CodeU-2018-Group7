@@ -21,8 +21,8 @@ def apply_moves(start_state, moves):
 
 def compute_move(start_state, end_state):
     """
-    Computes a move from one state to another under an assumption that end_state differs from
-    start_state by one move of some car to an empty lot.
+    Computes a move from one state to another under an assumption that end_state
+    differs from start_state by one move of some car to an empty lot.
     :returns a tuple
     """
     check_input_validity(start_state, end_state)

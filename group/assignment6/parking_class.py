@@ -1,7 +1,7 @@
 class Parking:
     """
     Args:
-        constraints: {parking_lot: (permitted cars)}
+        state: a list of car indices that should be in range(0, len(state))
     """
     def __init__(self, state):
         self._state = state
